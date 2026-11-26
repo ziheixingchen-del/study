@@ -37,7 +37,6 @@ body {
 
 .app-shell { display: flex; min-height: 100vh; }
 
-/* 最左侧极窄工具栏 */
 .rail {
   position: fixed;
   inset: 0 auto 0 0;
@@ -79,7 +78,6 @@ body {
 .rail-btn:hover, .rail-btn.active { background: #dfe3e8; color: var(--text-main); }
 .rail-bottom { margin-top: auto; }
 
-/* 侧边栏（Supernotes 浅灰面板） */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 52px;
@@ -138,7 +136,6 @@ body {
 .nav-txt { flex: 1; text-align: left; }
 .nav-cnt { font-size: 11px; color: var(--text-muted); }
 
-/* 侧边栏月度日历 */
 .side-calendar {
   margin-top: 18px;
   padding: 10px 6px;
@@ -181,7 +178,6 @@ body {
 .cal-day.has-act { background: #dcfce7; color: #166534; font-weight: 600; }
 .cal-day.today { background: #1f2329; color: #fff; font-weight: 700; }
 
-/* 侧边栏课程大纲 */
 .side-outline {
   flex: 1;
   overflow-y: auto;
@@ -206,8 +202,18 @@ body {
 }
 .outline-item:hover { background: #e8eaed; color: var(--text-main); }
 .outline-item span:last-child { font-size: 10px; color: var(--text-muted); }
+.outline-add-btn {
+  border: 0;
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+.outline-add-btn:hover { background: #e5e7eb; color: var(--text-main); }
 
-/* 侧边栏底部账号卡 */
 .side-bottom { padding-top: 10px; }
 .user-card {
   display: flex;
@@ -224,7 +230,6 @@ body {
 .user-info b { display: block; font-size: 12px; color: var(--text-main); }
 .user-info small { display: block; font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
 
-/* 主内容区（居中纸感流） */
 .main { margin-left: 300px; flex: 1; min-height: 100vh; }
 .topbar {
   height: 54px;
@@ -269,7 +274,6 @@ body {
 .feed-header h1 { font-size: 28px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.5px; }
 .feed-sub { font-size: 13px; color: var(--text-muted); margin: 0; }
 
-/* 快捷创建条 */
 .quick-create-bar {
   background: #eff1f4;
   border: 1px solid transparent;
@@ -297,7 +301,6 @@ body {
 }
 .chip-btn:hover { background: #f9fafb; }
 
-/* 核心白纸卡片 */
 .card-feed { display: flex; flex-direction: column; gap: 14px; }
 .sn-card {
   background: var(--card-bg);
@@ -490,6 +493,19 @@ label input, label textarea, label select { margin-top: 5px; }
   font-size: 13px;
 }
 
+.course-manage-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: #fafafa;
+}
+.course-manage-item b { font-size: 13px; }
+.course-manage-item small { display: block; color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -586,7 +602,8 @@ label input, label textarea, label select { margin-top: 5px; }
     </div>
 
     <div class="side-section-title" style="margin-top:16px">
-      <span>Outline · 课程直达</span>
+      <span>Outline · 课程目录</span>
+      <button type="button" class="outline-add-btn" id="manageCoursesSideBtn" title="添加或管理课程">＋</button>
     </div>
     <div class="side-outline" id="sideOutline"></div>
 
@@ -618,7 +635,7 @@ label input, label textarea, label select { margin-top: 5px; }
         <div class="feed-header">
           <div class="feed-icon">⌂</div>
           <h1>Home · 岩土备考空间</h1>
-          <p class="feed-sub" id="homeSubStats">19 门基础科目 · 0 条笔记 · 0 道错题 · 今日 0 项待复习</p>
+          <p class="feed-sub" id="homeSubStats">19 门科目 · 0 条笔记 · 0 道错题 · 今日 0 项待复习</p>
         </div>
 
         <div class="quick-create-bar" id="quickCreateTrigger">
@@ -633,7 +650,7 @@ label input, label textarea, label select { margin-top: 5px; }
           <div class="sn-card-head">
             <div>
               <h2>把学过的知识，变成真正掌握的能力</h2>
-              <div class="sn-parent">▤ 注册岩土工程师基础考试（公共基础 + 专业基础）</div>
+              <div class="sn-parent">▤ 注册岩土工程师备考知识库（支持自定义扩展课程）</div>
             </div>
             <span class="sn-badge" id="statDueBadge">今日待复习 0</span>
           </div>
@@ -644,7 +661,7 @@ label input, label textarea, label select { margin-top: 5px; }
             <span>共 <b id="statCourses">19</b> 门科目</span>
             <div class="sn-tags">
               <button class="tag-link" data-view="review">#进入今日复习</button>
-              <button class="tag-link" data-view="knowledge">#浏览课程大纲</button>
+              <button class="tag-link" id="manageCoursesHomeBtn">#管理课程目录</button>
             </div>
           </div>
         </article>
@@ -675,10 +692,9 @@ label input, label textarea, label select { margin-top: 5px; }
         <div class="toolbar">
           <input id="courseSearch" placeholder="搜索课程、章节或知识点关键词…">
           <select id="groupFilter">
-            <option value="全部">全部模块</option>
-            <option value="基础上">公共基础（上午）</option>
-            <option value="基础下">专业基础（下午）</option>
+            <option value="全部">全部分组</option>
           </select>
+          <button class="btn btn-outline" id="manageCoursesBtn">管理课程</button>
           <button class="btn btn-outline" id="importMdBtn">导入 MD</button>
           <input type="file" id="mdFile" accept=".md,.markdown,.txt" hidden>
           <button class="btn btn-primary" id="newNoteBtn">＋ 新建卡片</button>
@@ -740,7 +756,7 @@ label input, label textarea, label select { margin-top: 5px; }
           <article class="sn-card stat-mini"><span>刷题总量</span><strong id="statsQuestions">0</strong></article>
         </div>
         <article class="sn-card">
-          <h2>19 门科目笔记分布</h2>
+          <h2>各科目笔记分布</h2>
           <div id="statsCourseBars" class="bar-list"></div>
         </article>
       </section>
@@ -804,585 +820,669 @@ label input, label textarea, label select { margin-top: 5px; }
 <div class="toast" id="toast"></div>
 
 <script>
-const COURSES_DATA = [
-  {"group":"基础上","name":"高等数学","chapters":["函数与极限","微分学","积分学","常微分方程","线性代数","概率论与数理统计"]},
-  {"group":"基础上","name":"普通物理","chapters":["力学","热学","电磁学","振动与波","光学","近代物理"]},
-  {"group":"基础上","name":"普通化学","chapters":["物质结构","化学反应基础","溶液与离子平衡","氧化还原与电化学","有机化学基础"]},
-  {"group":"基础上","name":"理论力学","chapters":["静力学","运动学","动力学"]},
-  {"group":"基础上","name":"材料力学","chapters":["轴向拉压","剪切与扭转","弯曲内力","弯曲应力与变形","应力状态与强度理论","压杆稳定"]},
-  {"group":"基础上","name":"流体力学","chapters":["流体静力学","流体动力学","管流与水头损失","孔口管嘴与明渠基础"]},
-  {"group":"基础上","name":"计算机应用基础","chapters":["计算机基础","操作系统","网络基础","常用软件与信息技术"]},
-  {"group":"基础上","name":"电工电子技术","chapters":["直流电路","交流电路","电机与控制基础","模拟电子技术","数字电子技术"]},
-  {"group":"基础上","name":"工程经济","chapters":["资金时间价值","经济评价指标","方案比较","不确定性分析"]},
-  {"group":"基础上","name":"法律法规","chapters":["建设工程相关法律","勘察设计管理法规","合同与招投标","工程质量安全法规"]},
-  {"group":"基础下","name":"土木工程材料","chapters":["材料基本性质","建筑钢材","水泥与混凝土","沥青及其他材料"]},
-  {"group":"基础下","name":"工程测量","chapters":["测量基础","水准测量","角度与距离测量","控制测量","地形图与施工测量"]},
-  {"group":"基础下","name":"职业法规","chapters":["注册制度","执业责任","职业道德与行业管理"]},
-  {"group":"基础下","name":"土木工程施工与管理","chapters":["施工技术基础","地基基础施工","施工组织管理","工程项目管理"]},
-  {"group":"基础下","name":"结构力学","chapters":["几何组成分析","静定结构","超静定结构","影响线","结构动力学基础"]},
-  {"group":"基础下","name":"结构设计","chapters":["结构设计基本原则","混凝土结构基础","钢结构基础","砌体结构基础"]},
-  {"group":"基础下","name":"土力学与地基基础","chapters":["土的物理性质","土的渗透性","地基应力","土的压缩与固结","土的抗剪强度","土压力与挡土结构","地基承载力","地基基础设计基础"]},
-  {"group":"基础下","name":"工程地质","chapters":["矿物与岩石","地质构造","地貌与第四纪地质","地下水","不良地质作用","工程地质勘察"]},
-  {"group":"基础下","name":"岩体力学","chapters":["岩石物理力学性质","岩体结构面","岩体强度与变形","岩体稳定性基础","边坡与地下工程基础"]}
-];
+(() => {
+  const DEFAULT_COURSES = [
+    {"group":"基础上","name":"高等数学","chapters":["函数与极限","微分学","积分学","常微分方程","线性代数","概率论与数理统计"]},
+    {"group":"基础上","name":"普通物理","chapters":["力学","热学","电磁学","振动与波","光学","近代物理"]},
+    {"group":"基础上","name":"普通化学","chapters":["物质结构","化学反应基础","溶液与离子平衡","氧化还原与电化学","有机化学基础"]},
+    {"group":"基础上","name":"理论力学","chapters":["静力学","运动学","动力学"]},
+    {"group":"基础上","name":"材料力学","chapters":["轴向拉压","剪切与扭转","弯曲内力","弯曲应力与变形","应力状态与强度理论","压杆稳定"]},
+    {"group":"基础上","name":"流体力学","chapters":["流体静力学","流体动力学","管流与水头损失","孔口管嘴与明渠基础"]},
+    {"group":"基础上","name":"计算机应用基础","chapters":["计算机基础","操作系统","网络基础","常用软件与信息技术"]},
+    {"group":"基础上","name":"电工电子技术","chapters":["直流电路","交流电路","电机与控制基础","模拟电子技术","数字电子技术"]},
+    {"group":"基础上","name":"工程经济","chapters":["资金时间价值","经济评价指标","方案比较","不确定性分析"]},
+    {"group":"基础上","name":"法律法规","chapters":["建设工程相关法律","勘察设计管理法规","合同与招投标","工程质量安全法规"]},
+    {"group":"基础下","name":"土木工程材料","chapters":["材料基本性质","建筑钢材","水泥与混凝土","沥青及其他材料"]},
+    {"group":"基础下","name":"工程测量","chapters":["测量基础","水准测量","角度与距离测量","控制测量","地形图与施工测量"]},
+    {"group":"基础下","name":"职业法规","chapters":["注册制度","执业责任","职业道德与行业管理"]},
+    {"group":"基础下","name":"土木工程施工与管理","chapters":["施工技术基础","地基基础施工","施工组织管理","工程项目管理"]},
+    {"group":"基础下","name":"结构力学","chapters":["几何组成分析","静定结构","超静定结构","影响线","结构动力学基础"]},
+    {"group":"基础下","name":"结构设计","chapters":["结构设计基本原则","混凝土结构基础","钢结构基础","砌体结构基础"]},
+    {"group":"基础下","name":"土力学与地基基础","chapters":["土的物理性质","土的渗透性","地基应力","土的压缩与固结","土的抗剪强度","土压力与挡土结构","地基承载力","地基基础设计基础"]},
+    {"group":"基础下","name":"工程地质","chapters":["矿物与岩石","地质构造","地貌与第四纪地质","地下水","不良地质作用","工程地质勘察"]},
+    {"group":"基础下","name":"岩体力学","chapters":["岩石物理力学性质","岩体结构面","岩体强度与变形","岩体稳定性基础","边坡与地下工程基础"]}
+  ];
 
-const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-const DB_KEY = "geotech_study_v1", CFG_KEY = "geotech_supabase_config";
-const defaultData = () => ({ notes: [], mistakes: [], reviews: [], practice: [], updated_at: new Date().toISOString() });
-let data = defaultData(), courses = COURSES_DATA, selectedCourse = "全部", reviewFilter = "due", sbClient = null, currentUser = null, hadLocalData = false;
-let calDate = new Date();
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const DB_KEY = "geotech_study_v1", CFG_KEY = "geotech_supabase_config";
+  const defaultData = () => ({ notes: [], mistakes: [], reviews: [], practice: [], custom_courses: null, updated_at: new Date().toISOString() });
+  let data = defaultData(), selectedCourse = "全部", reviewFilter = "due", sbClient = null, currentUser = null, hadLocalData = false;
+  let calDate = new Date();
 
-const IDB_NAME = "geotech-study-db", IDB_STORE = "appdata";
-function idbOpen() {
-  return new Promise((resolve, reject) => {
-    if (!("indexedDB" in window)) { resolve(null); return; }
-    let req = indexedDB.open(IDB_NAME, 1);
-    req.onupgradeneeded = () => req.result.createObjectStore(IDB_STORE);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function idbGet() {
-  try {
-    let db = await idbOpen();
-    if (!db) return null;
-    return await new Promise((resolve, reject) => {
-      let tx = db.transaction(IDB_STORE, "readonly"), r = tx.objectStore(IDB_STORE).get("study");
-      r.onsuccess = () => resolve(r.result || null);
-      r.onerror = () => reject(r.error);
-    });
-  } catch (e) { return null; }
-}
-async function idbPut(value) {
-  try {
-    let db = await idbOpen();
-    if (!db) return;
-    await new Promise((resolve, reject) => {
-      let tx = db.transaction(IDB_STORE, "readwrite");
-      tx.objectStore(IDB_STORE).put(value, "study");
-      tx.oncomplete = resolve;
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) { console.warn("IndexedDB save failed", e); }
-}
-
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const today = () => new Date().toISOString().slice(0, 10);
-const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
-function toast(msg) {
-  let t = $("#toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2600);
-}
-function saveLocal() {
-  data.updated_at = new Date().toISOString();
-  hadLocalData = true;
-  localStorage.setItem(DB_KEY, JSON.stringify(data));
-  idbPut(data);
-  renderAll();
-}
-
-async function load() {
-  try {
-    let v = await idbGet();
-    if (!v) {
-      let raw = localStorage.getItem(DB_KEY);
-      if (raw) v = JSON.parse(raw);
-    }
-    if (v) {
-      data = { ...defaultData(), ...v };
-      hadLocalData = true;
-    }
-  } catch (e) { data = defaultData(); }
-  $("#todayText").textContent = new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" }).format(new Date());
-  renderAll();
-  initCloud();
-}
-
-function switchView(v) {
-  $$(".view").forEach(x => x.classList.toggle("active", x.id === "view-" + v));
-  $$(".nav-item").forEach(x => x.classList.toggle("active", x.dataset.view === v));
-  $$(".rail-btn").forEach(x => x.classList.toggle("active", x.dataset.view === v));
-  $("#breadcrumb").textContent = ({ home: "学习总览", knowledge: "课程知识库", mistakes: "错题管理", review: "复习中心", practice: "练习记录", stats: "学习统计", settings: "云同步与设置" })[v] || v;
-  $("#sidebar").classList.remove("open");
-  if (v === "knowledge") renderKnowledge();
-  if (v === "mistakes") renderMistakes();
-  if (v === "review") renderReviews();
-  if (v === "stats") renderStats();
-}
-
-function renderAll() {
-  renderSidebarMeta();
-  renderCalendar();
-  renderHome();
-  renderKnowledge();
-  renderMistakes();
-  renderReviews();
-  renderPractice();
-  renderStats();
-}
-
-function countDue() { return data.reviews.filter(x => x.next_date <= today()).length; }
-
-function renderSidebarMeta() {
-  $("#navCntAll").textContent = data.notes.length + data.mistakes.length;
-  $("#navCntNotes").textContent = data.notes.length;
-  $("#navCntMistakes").textContent = data.mistakes.length;
-  $("#navCntDue").textContent = countDue();
-  $("#navCntPractice").textContent = data.practice.length;
-  $("#sideOutline").innerHTML = courses.map(c => {
-    let cnt = data.notes.filter(n => n.course === c.name).length;
-    return `<button class="outline-item" data-jump-course="${esc(c.name)}"><span>${esc(c.name)}</span><span>${cnt || ""}</span></button>`;
-  }).join("");
-}
-
-function renderCalendar() {
-  let y = calDate.getFullYear(), m = calDate.getMonth();
-  $("#calMonthLabel").textContent = `${y}年${m + 1}月`;
-  let firstDay = new Date(y, m, 1).getDay();
-  let offset = (firstDay + 6) % 7;
-  let daysInMonth = new Date(y, m + 1, 0).getDate();
-  let activeDates = new Set([
-    ...data.notes.map(x => (x.updated_at || "").slice(0, 10)),
-    ...data.mistakes.map(x => (x.created_at || "").slice(0, 10)),
-    ...data.practice.map(x => (x.date || "").slice(0, 10)),
-    ...data.reviews.map(x => (x.completed_at || "").slice(0, 10))
-  ]);
-  let cells = [];
-  for (let i = 0; i < offset; i++) cells.push(`<div class="cal-day empty"></div>`);
-  let tStr = today();
-  for (let d = 1; d <= daysInMonth; d++) {
-    let ds = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    let cls = ["cal-day"];
-    if (activeDates.has(ds)) cls.push("has-act");
-    if (ds === tStr) cls.push("today");
-    cells.push(`<div class="${cls.join(" ")}" title="${ds}">${d}</div>`);
+  function getCourses() {
+    return Array.isArray(data.custom_courses) && data.custom_courses.length ? data.custom_courses : DEFAULT_COURSES;
   }
-  $("#calGrid").innerHTML = cells.join("");
-}
 
-function renderHome() {
-  let dueCnt = countDue();
-  $("#statCourses").textContent = courses.length;
-  $("#statNotes").textContent = data.notes.length;
-  $("#statMistakes").textContent = data.mistakes.length;
-  $("#statDueBadge").textContent = `今日待复习 ${dueCnt}`;
-  $("#homeSubStats").textContent = `${courses.length} 门基础科目 · ${data.notes.length} 条笔记 · ${data.mistakes.length} 道错题 · 今日 ${dueCnt} 项待复习`;
-
-  let due = data.reviews.filter(x => x.next_date <= today()).slice(0, 4);
-  $("#homeDue").innerHTML = due.length ? due.map(x => `
-    <article class="sn-card">
-      <div class="sn-card-head">
-        <div>
-          <h3>${esc(x.title)}</h3>
-          <div class="sn-parent">▤ ${esc(x.course)} · ${esc(x.chapter || "未分类章节")}</div>
-        </div>
-        <button class="chip-btn" data-view="review">去复习 →</button>
-      </div>
-    </article>`).join("") : '<div class="empty">今天还没有待复习卡片。在知识库中点击「加入复习」，卡片会按记忆曲线出现在这里。</div>';
-
-  $("#homeCourses").innerHTML = courses.slice(0, 10).map(c => {
-    let n = data.notes.filter(x => x.course === c.name).length;
-    return `<div class="progress-row"><div class="progress-meta"><span>${esc(c.name)}</span><span>${n} 张卡片</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(100, n * 12)}%"></div></div></div>`;
-  }).join("");
-}
-
-function renderKnowledge() {
-  let q = ($("#courseSearch")?.value || "").toLowerCase(), g = $("#groupFilter")?.value || "全部";
-  let filtered = courses.filter(c => (g === "全部" || c.group === g) && (!q || c.name.toLowerCase().includes(q) || c.chapters.some(k => k.toLowerCase().includes(q))));
-  $("#courseTree").innerHTML = `<button class="course-pill ${selectedCourse === "全部" ? "active" : ""}" data-course="全部">全部 (${data.notes.length})</button>` +
-    filtered.map(c => {
-      let cnt = data.notes.filter(n => n.course === c.name).length;
-      return `<button class="course-pill ${selectedCourse === c.name ? "active" : ""}" data-course="${esc(c.name)}">${esc(c.name)}${cnt ? ` (${cnt})` : ""}</button>`;
-    }).join("");
-
-  let ns = data.notes.filter(n => (selectedCourse === "全部" || n.course === selectedCourse) && (!q || [n.title, n.content, n.chapter, n.course].join(" ").toLowerCase().includes(q)));
-  $("#selectedCourseTitle").textContent = selectedCourse === "全部" ? "课程知识库" : selectedCourse;
-  $("#selectedCourseDesc").textContent = `当前筛选共 ${ns.length} 张知识卡片`;
-
-  $("#notesList").innerHTML = ns.length ? ns.map(n => `
-    <article class="sn-card">
-      <div class="sn-card-head">
-        <div>
-          <h3>${esc(n.title)}</h3>
-          <div class="sn-parent">▤ ${esc(n.course)} / ${esc(n.chapter || "未分类章节")}</div>
-        </div>
-        <span class="sn-badge">${esc((n.updated_at || "").slice(0, 10))}</span>
-      </div>
-      <div class="sn-card-body">${esc(n.content || "暂无正文内容")}</div>
-      <div class="sn-card-foot">
-        <div class="sn-tags">${(n.tags || []).map(t => `<span class="tag-link">#${esc(t)}</span>`).join("")}</div>
-        <div class="sn-tags">
-          <button class="chip-btn" data-edit-note="${n.id}">编辑</button>
-          <button class="chip-btn" data-review-note="${n.id}">加入复习</button>
-          <button class="chip-btn" data-delete-note="${n.id}">删除</button>
-        </div>
-      </div>
-    </article>`).join("") : '<div class="empty">还没有知识卡片。点击右上角「＋ 新建卡片」，或导入 Markdown 开始积累。</div>';
-}
-
-function renderMistakes() {
-  let q = ($("#mistakeSearch")?.value || "").toLowerCase(), f = $("#mistakeCourseFilter")?.value || "";
-  let opts = [...new Set(courses.map(c => c.name))];
-  $("#mistakeCourseFilter").innerHTML = '<option value="">全部课程</option>' + opts.map(c => `<option ${f === c ? "selected" : ""}>${esc(c)}</option>`).join("");
-  let arr = data.mistakes.filter(m => (!f || m.course === f) && (!q || [m.title, m.question, m.reason, m.solution].join(" ").toLowerCase().includes(q)));
-  $("#mistakeList").innerHTML = arr.length ? arr.map(m => `
-    <article class="sn-card highlight-card">
-      <div class="sn-card-head">
-        <div>
-          <h3>${esc(m.title)}</h3>
-          <div class="sn-parent">✎ ${esc(m.course)} · ${esc(m.chapter || "未分类")}</div>
-        </div>
-        <span class="sn-badge">${esc(m.created_at || "")}</span>
-      </div>
-      <div class="sn-card-body"><b>题目条件：</b>${esc(m.question || "未填写")}\n\n<mark>错误原因：</mark>${esc(m.reason || "未填写")}\n\n<b>正确思路：</b>${esc(m.solution || "未填写")}</div>
-      <div class="sn-card-foot">
-        <span>错题沉淀</span>
-        <div class="sn-tags">
-          <button class="chip-btn" data-edit-mistake="${m.id}">编辑</button>
-          <button class="chip-btn" data-delete-mistake="${m.id}">删除</button>
-        </div>
-      </div>
-    </article>`).join("") : '<div class="empty">还没有错题卡片。点击右上角「＋ 记录错题」沉淀易错点。</div>';
-}
-
-function renderReviews() {
-  let arr = data.reviews.filter(r => reviewFilter === "all" || r.next_date <= today());
-  $("#reviewCount").textContent = `${countDue()} 项待复习 · 先在脑海中主动回忆，再点击揭晓答案`;
-  $("#reviewList").innerHTML = arr.length ? arr.map(r => `
-    <article class="sn-card">
-      <div class="sn-card-head">
-        <div>
-          <h3>${esc(r.title)}</h3>
-          <div class="sn-parent">◷ ${esc(r.course)} · ${esc(r.chapter || "")} · 下次复习：${esc(r.next_date)}</div>
-        </div>
-        <div class="sn-tags">
-          <button class="chip-btn" data-show-answer="${r.id}">查看答案</button>
-          <button class="chip-btn" data-review-done="${r.id}">直接通过</button>
-          <button class="chip-btn" data-delete-review="${r.id}">移除</button>
-        </div>
-      </div>
-      <div id="answer-${r.id}"></div>
-    </article>`).join("") : '<div class="empty">当前没有到期复习卡片，去知识库添加新卡片吧。</div>';
-}
-
-function renderPractice() {
-  let arr = data.practice;
-  $("#practiceList").innerHTML = arr.length ? arr.map(p => `
-    <article class="sn-card">
-      <div class="sn-card-head">
-        <div>
-          <h3>${esc(p.title)}</h3>
-          <div class="sn-parent">✓ ${esc(p.course)} · ${esc(p.date)} · 共 ${p.total || 0} 题，正确 ${p.correct || 0} 题（正确率 ${p.total ? Math.round((p.correct / p.total) * 100) : 0}%）</div>
-        </div>
-        <button class="chip-btn" data-delete-practice="${p.id}">删除</button>
-      </div>
-    </article>`).join("") : '<div class="empty">暂时没有练习记录。</div>';
-}
-
-function renderStats() {
-  $("#statsNotes").textContent = data.notes.length;
-  $("#statsMistakes").textContent = data.mistakes.length;
-  $("#statsReviews").textContent = data.reviews.filter(x => x.completed_at).length;
-  $("#statsQuestions").textContent = data.practice.reduce((a, x) => a + (Number(x.total) || 0), 0);
-  $("#statsCourseBars").innerHTML = courses.map(c => {
-    let n = data.notes.filter(x => x.course === c.name).length;
-    return `<div class="bar-row"><span>${esc(c.name)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100, n * 10)}%"></div></div><b>${n}</b></div>`;
-  }).join("");
-}
-
-function openModal(title, html, submit) {
-  $("#modalTitle").textContent = title;
-  $("#modalBody").innerHTML = html;
-  $("#modalBackdrop").classList.add("show");
-  $("#modalBody").onsubmit = e => { e.preventDefault(); submit(new FormData(e.target)); };
-}
-function closeModal() { $("#modalBackdrop").classList.remove("show"); }
-function courseOptions(selected = "") { return courses.map(c => `<option ${selected === c.name ? "selected" : ""}>${esc(c.name)}</option>`).join(""); }
-function chapterOptions(course, selected = "") { let c = courses.find(x => x.name === course); return (c?.chapters || []).map(x => `<option ${selected === x ? "selected" : ""}>${esc(x)}</option>`).join(""); }
-
-function noteForm(n = {}) {
-  openModal(n.id ? "编辑知识卡片" : "新建知识卡片", `
-    <form>
-      <div class="form-grid">
-        <label>所属科目<select name="course" id="noteCourse">${courseOptions(n.course || "土力学与地基基础")}</select></label>
-        <label>对应章节<select name="chapter" id="noteChapter">${chapterOptions(n.course || "土力学与地基基础", n.chapter || "")}</select></label>
-      </div>
-      <label>卡片标题<input name="title" required value="${esc(n.title || "")}" placeholder="例如：有效应力原理与渗透力计算"></label>
-      <label>卡片正文<textarea name="content" rows="8" placeholder="支持多行记录核心公式、适用条件与规范条文…">${esc(n.content || "")}</textarea></label>
-      <label>标签（英文逗号分隔）<input name="tags" value="${esc((n.tags || []).join(", "))}" placeholder="核心公式, 高频考点"></label>
-      <div class="form-actions">
-        <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
-        <button class="btn btn-primary">保存卡片</button>
-      </div>
-    </form>`, f => {
-    let v = Object.fromEntries(f.entries());
-    let obj = { ...n, id: n.id || uid(), ...v, tags: v.tags.split(/[,，]/).map(x => x.trim()).filter(Boolean), updated_at: today() };
-    let i = data.notes.findIndex(x => x.id === obj.id);
-    if (i >= 0) data.notes[i] = obj; else data.notes.unshift(obj);
-    saveLocal();
-    closeModal();
-    toast("知识卡片已保存");
-  });
-  $("#noteCourse").onchange = e => $("#noteChapter").innerHTML = chapterOptions(e.target.value);
-}
-
-function mistakeForm(m = {}) {
-  openModal(m.id ? "编辑错题卡片" : "记录错题卡片", `
-    <form>
-      <div class="form-grid">
-        <label>所属科目<select name="course">${courseOptions(m.course || "土力学与地基基础")}</select></label>
-        <label>章节<input name="chapter" value="${esc(m.chapter || "")}" placeholder="例如：土的抗剪强度"></label>
-      </div>
-      <label>题目摘要<input name="title" required value="${esc(m.title || "")}" placeholder="简要概括本题考点"></label>
-      <label>题干条件与错误过程<textarea name="question" rows="3">${esc(m.question || "")}</textarea></label>
-      <label>错误原因（高亮标出）<textarea name="reason" rows="2" placeholder="概念混淆、单位换算遗漏、公式正负号错误…">${esc(m.reason || "")}</textarea></label>
-      <label>正确思路与结论<textarea name="solution" rows="3">${esc(m.solution || "")}</textarea></label>
-      <div class="form-actions">
-        <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
-        <button class="btn btn-primary">保存错题</button>
-      </div>
-    </form>`, f => {
-    let v = Object.fromEntries(f.entries()), obj = { ...m, id: m.id || uid(), ...v, created_at: m.created_at || today() };
-    let i = data.mistakes.findIndex(x => x.id === obj.id);
-    if (i >= 0) data.mistakes[i] = obj; else data.mistakes.unshift(obj);
-    saveLocal();
-    closeModal();
-    toast("错题卡片已保存");
-  });
-}
-
-function practiceForm() {
-  openModal("添加练习记录", `
-    <form>
-      <label>练习主题<input name="title" required placeholder="例如：2023年上午公共基础真题"></label>
-      <label>所属科目<select name="course">${courseOptions()}</select></label>
-      <div class="form-grid">
-        <label>总题数<input name="total" type="number" min="1" value="20"></label>
-        <label>正确题数<input name="correct" type="number" min="0" value="15"></label>
-      </div>
-      <label>练习日期<input type="date" name="date" value="${today()}"></label>
-      <div class="form-actions">
-        <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
-        <button class="btn btn-primary">保存记录</button>
-      </div>
-    </form>`, f => {
-    let v = Object.fromEntries(f.entries());
-    data.practice.unshift({ id: uid(), ...v, total: Number(v.total), correct: Number(v.correct) });
-    saveLocal();
-    closeModal();
-    toast("练习记录已保存");
-  });
-}
-
-function addReviewFromNote(n) {
-  if (data.reviews.some(r => r.note_id === n.id)) { toast("该卡片已在复习计划中"); return; }
-  data.reviews.unshift({ id: uid(), note_id: n.id, title: n.title, course: n.course, chapter: n.chapter, answer: n.content, next_date: today(), interval: 0 });
-  saveLocal();
-  toast("已加入今日复习队列");
-}
-
-function gradeReview(id, grade) {
-  let r = data.reviews.find(x => x.id === id);
-  if (!r) return;
-  r.interval = grade === "again" ? 1 : Math.max(1, Math.round((r.interval || 1) * ({ hard: 1.5, good: 2, easy: 3 }[grade])));
-  r.next_date = new Date(Date.now() + r.interval * 86400000).toISOString().slice(0, 10);
-  r.completed_at = today();
-  saveLocal();
-  toast(`复习完成，下次安排在 ${r.next_date}`);
-}
-
-function exportJSON() {
-  let blob = new Blob([JSON.stringify({ version: 1, exported_at: new Date().toISOString(), data }, null, 2)], { type: "application/json" });
-  download(blob, "岩土备考库备份-" + today() + ".json");
-}
-function download(blob, name) {
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-function importJSON(file) {
-  let r = new FileReader();
-  r.onload = () => {
+  const IDB_NAME = "geotech-study-db", IDB_STORE = "appdata";
+  function idbOpen() {
+    return new Promise((resolve, reject) => {
+      if (!("indexedDB" in window)) { resolve(null); return; }
+      let req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = () => req.result.createObjectStore(IDB_STORE);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function idbGet() {
     try {
-      let obj = JSON.parse(r.result), incoming = obj.data || obj;
-      if (!incoming.notes || !incoming.mistakes) throw Error("文件格式不正确");
-      for (let k of ["notes", "mistakes", "reviews", "practice"]) {
-        let map = new Map([...data[k], ...(incoming[k] || [])].map(x => [x.id, x]));
-        data[k] = [...map.values()];
+      let db = await idbOpen();
+      if (!db) return null;
+      return await new Promise((resolve, reject) => {
+        let tx = db.transaction(IDB_STORE, "readonly"), r = tx.objectStore(IDB_STORE).get("study");
+        r.onsuccess = () => resolve(r.result || null);
+        r.onerror = () => reject(r.error);
+      });
+    } catch (e) { return null; }
+  }
+  async function idbPut(value) {
+    try {
+      let db = await idbOpen();
+      if (!db) return;
+      await new Promise((resolve, reject) => {
+        let tx = db.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).put(value, "study");
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch (e) { console.warn("IndexedDB save failed", e); }
+  }
+
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const today = () => new Date().toISOString().slice(0, 10);
+  const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+  function toast(msg) {
+    let t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2600);
+  }
+  function saveLocal() {
+    data.updated_at = new Date().toISOString();
+    hadLocalData = true;
+    localStorage.setItem(DB_KEY, JSON.stringify(data));
+    idbPut(data);
+    renderAll();
+  }
+
+  async function load() {
+    try {
+      let v = await idbGet();
+      if (!v) {
+        let raw = localStorage.getItem(DB_KEY);
+        if (raw) v = JSON.parse(raw);
       }
+      if (v) {
+        data = { ...defaultData(), ...v };
+        hadLocalData = true;
+      }
+    } catch (e) { data = defaultData(); }
+    $("#todayText").textContent = new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" }).format(new Date());
+    renderAll();
+    initCloud();
+  }
+
+  function switchView(v) {
+    $$(".view").forEach(x => x.classList.toggle("active", x.id === "view-" + v));
+    $$(".nav-item").forEach(x => x.classList.toggle("active", x.dataset.view === v));
+    $$(".rail-btn").forEach(x => x.classList.toggle("active", x.dataset.view === v));
+    $("#breadcrumb").textContent = ({ home: "学习总览", knowledge: "课程知识库", mistakes: "错题管理", review: "复习中心", practice: "练习记录", stats: "学习统计", settings: "云同步与设置" })[v] || v;
+    $("#sidebar").classList.remove("open");
+    if (v === "knowledge") renderKnowledge();
+    if (v === "mistakes") renderMistakes();
+    if (v === "review") renderReviews();
+    if (v === "stats") renderStats();
+  }
+
+  function renderAll() {
+    renderSidebarMeta();
+    renderCalendar();
+    renderHome();
+    renderKnowledge();
+    renderMistakes();
+    renderReviews();
+    renderPractice();
+    renderStats();
+  }
+
+  function countDue() { return data.reviews.filter(x => x.next_date <= today()).length; }
+
+  function renderSidebarMeta() {
+    let courses = getCourses();
+    $("#navCntAll").textContent = data.notes.length + data.mistakes.length;
+    $("#navCntNotes").textContent = data.notes.length;
+    $("#navCntMistakes").textContent = data.mistakes.length;
+    $("#navCntDue").textContent = countDue();
+    $("#navCntPractice").textContent = data.practice.length;
+    $("#sideOutline").innerHTML = courses.map(c => {
+      let cnt = data.notes.filter(n => n.course === c.name).length;
+      return `<button class="outline-item" data-jump-course="${esc(c.name)}"><span>${esc(c.name)}</span><span>${cnt || ""}</span></button>`;
+    }).join("");
+  }
+
+  function renderCalendar() {
+    let y = calDate.getFullYear(), m = calDate.getMonth();
+    $("#calMonthLabel").textContent = `${y}年${m + 1}月`;
+    let firstDay = new Date(y, m, 1).getDay();
+    let offset = (firstDay + 6) % 7;
+    let daysInMonth = new Date(y, m + 1, 0).getDate();
+    let activeDates = new Set([
+      ...data.notes.map(x => (x.updated_at || "").slice(0, 10)),
+      ...data.mistakes.map(x => (x.created_at || "").slice(0, 10)),
+      ...data.practice.map(x => (x.date || "").slice(0, 10)),
+      ...data.reviews.map(x => (x.completed_at || "").slice(0, 10))
+    ]);
+    let cells = [];
+    for (let i = 0; i < offset; i++) cells.push(`<div class="cal-day empty"></div>`);
+    let tStr = today();
+    for (let d = 1; d <= daysInMonth; d++) {
+      let ds = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      let cls = ["cal-day"];
+      if (activeDates.has(ds)) cls.push("has-act");
+      if (ds === tStr) cls.push("today");
+      cells.push(`<div class="${cls.join(" ")}" title="${ds}">${d}</div>`);
+    }
+    $("#calGrid").innerHTML = cells.join("");
+  }
+
+  function renderHome() {
+    let courses = getCourses();
+    let dueCnt = countDue();
+    $("#statCourses").textContent = courses.length;
+    $("#statNotes").textContent = data.notes.length;
+    $("#statMistakes").textContent = data.mistakes.length;
+    $("#statDueBadge").textContent = `今日待复习 ${dueCnt}`;
+    $("#homeSubStats").textContent = `${courses.length} 门科目 · ${data.notes.length} 条笔记 · ${data.mistakes.length} 道错题 · 今日 ${dueCnt} 项待复习`;
+
+    let due = data.reviews.filter(x => x.next_date <= today()).slice(0, 4);
+    $("#homeDue").innerHTML = due.length ? due.map(x => `
+      <article class="sn-card">
+        <div class="sn-card-head">
+          <div>
+            <h3>${esc(x.title)}</h3>
+            <div class="sn-parent">▤ ${esc(x.course)} · ${esc(x.chapter || "未分类章节")}</div>
+          </div>
+          <button class="chip-btn" data-view="review">去复习 →</button>
+        </div>
+      </article>`).join("") : '<div class="empty">今天还没有待复习卡片。在知识库中点击「加入复习」，卡片会按记忆曲线出现在这里。</div>';
+
+    $("#homeCourses").innerHTML = courses.slice(0, 12).map(c => {
+      let n = data.notes.filter(x => x.course === c.name).length;
+      return `<div class="progress-row"><div class="progress-meta"><span>${esc(c.name)}</span><span>${n} 张卡片</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(100, n * 12)}%"></div></div></div>`;
+    }).join("");
+  }
+
+  function renderKnowledge() {
+    let courses = getCourses();
+    let groups = [...new Set(courses.map(c => c.group))];
+    let curGroup = $("#groupFilter")?.value || "全部";
+    $("#groupFilter").innerHTML = `<option value="全部">全部分组</option>` + groups.map(g => `<option value="${esc(g)}" ${curGroup === g ? "selected" : ""}>${esc(g)}</option>`).join("");
+
+    let q = ($("#courseSearch")?.value || "").toLowerCase(), g = $("#groupFilter")?.value || "全部";
+    let filtered = courses.filter(c => (g === "全部" || c.group === g) && (!q || c.name.toLowerCase().includes(q) || (c.chapters || []).some(k => k.toLowerCase().includes(q))));
+    $("#courseTree").innerHTML = `<button class="course-pill ${selectedCourse === "全部" ? "active" : ""}" data-course="全部">全部 (${data.notes.length})</button>` +
+      filtered.map(c => {
+        let cnt = data.notes.filter(n => n.course === c.name).length;
+        return `<button class="course-pill ${selectedCourse === c.name ? "active" : ""}" data-course="${esc(c.name)}">${esc(c.name)}${cnt ? ` (${cnt})` : ""}</button>`;
+      }).join("");
+
+    let ns = data.notes.filter(n => (selectedCourse === "全部" || n.course === selectedCourse) && (!q || [n.title, n.content, n.chapter, n.course].join(" ").toLowerCase().includes(q)));
+    $("#selectedCourseTitle").textContent = selectedCourse === "全部" ? "课程知识库" : selectedCourse;
+    $("#selectedCourseDesc").textContent = `当前筛选共 ${ns.length} 张知识卡片`;
+
+    $("#notesList").innerHTML = ns.length ? ns.map(n => `
+      <article class="sn-card">
+        <div class="sn-card-head">
+          <div>
+            <h3>${esc(n.title)}</h3>
+            <div class="sn-parent">▤ ${esc(n.course)} / ${esc(n.chapter || "未分类章节")}</div>
+          </div>
+          <span class="sn-badge">${esc((n.updated_at || "").slice(0, 10))}</span>
+        </div>
+        <div class="sn-card-body">${esc(n.content || "暂无正文内容")}</div>
+        <div class="sn-card-foot">
+          <div class="sn-tags">${(n.tags || []).map(t => `<span class="tag-link">#${esc(t)}</span>`).join("")}</div>
+          <div class="sn-tags">
+            <button class="chip-btn" data-edit-note="${n.id}">编辑</button>
+            <button class="chip-btn" data-review-note="${n.id}">加入复习</button>
+            <button class="chip-btn" data-delete-note="${n.id}">删除</button>
+          </div>
+        </div>
+      </article>`).join("") : '<div class="empty">还没有知识卡片。点击右上角「＋ 新建卡片」，或导入 Markdown 开始积累。</div>';
+  }
+
+  function renderMistakes() {
+    let courses = getCourses();
+    let q = ($("#mistakeSearch")?.value || "").toLowerCase(), f = $("#mistakeCourseFilter")?.value || "";
+    let opts = [...new Set(courses.map(c => c.name))];
+    $("#mistakeCourseFilter").innerHTML = '<option value="">全部课程</option>' + opts.map(c => `<option ${f === c ? "selected" : ""}>${esc(c)}</option>`).join("");
+    let arr = data.mistakes.filter(m => (!f || m.course === f) && (!q || [m.title, m.question, m.reason, m.solution].join(" ").toLowerCase().includes(q)));
+    $("#mistakeList").innerHTML = arr.length ? arr.map(m => `
+      <article class="sn-card highlight-card">
+        <div class="sn-card-head">
+          <div>
+            <h3>${esc(m.title)}</h3>
+            <div class="sn-parent">✎ ${esc(m.course)} · ${esc(m.chapter || "未分类")}</div>
+          </div>
+          <span class="sn-badge">${esc(m.created_at || "")}</span>
+        </div>
+        <div class="sn-card-body"><b>题目条件：</b>${esc(m.question || "未填写")}\n\n<mark>错误原因：</mark>${esc(m.reason || "未填写")}\n\n<b>正确思路：</b>${esc(m.solution || "未填写")}</div>
+        <div class="sn-card-foot">
+          <span>错题沉淀</span>
+          <div class="sn-tags">
+            <button class="chip-btn" data-edit-mistake="${m.id}">编辑</button>
+            <button class="chip-btn" data-delete-mistake="${m.id}">删除</button>
+          </div>
+        </div>
+      </article>`).join("") : '<div class="empty">还没有错题卡片。点击右上角「＋ 记录错题」沉淀易错点。</div>';
+  }
+
+  function renderReviews() {
+    let arr = data.reviews.filter(r => reviewFilter === "all" || r.next_date <= today());
+    $("#reviewCount").textContent = `${countDue()} 项待复习 · 先在脑海中主动回忆，再点击揭晓答案`;
+    $("#reviewList").innerHTML = arr.length ? arr.map(r => `
+      <article class="sn-card">
+        <div class="sn-card-head">
+          <div>
+            <h3>${esc(r.title)}</h3>
+            <div class="sn-parent">◷ ${esc(r.course)} · ${esc(r.chapter || "")} · 下次复习：${esc(r.next_date)}</div>
+          </div>
+          <div class="sn-tags">
+            <button class="chip-btn" data-show-answer="${r.id}">查看答案</button>
+            <button class="chip-btn" data-review-done="${r.id}">直接通过</button>
+            <button class="chip-btn" data-delete-review="${r.id}">移除</button>
+          </div>
+        </div>
+        <div id="answer-${r.id}"></div>
+      </article>`).join("") : '<div class="empty">当前没有到期复习卡片，去知识库添加新卡片吧。</div>';
+  }
+
+  function renderPractice() {
+    let arr = data.practice;
+    $("#practiceList").innerHTML = arr.length ? arr.map(p => `
+      <article class="sn-card">
+        <div class="sn-card-head">
+          <div>
+            <h3>${esc(p.title)}</h3>
+            <div class="sn-parent">✓ ${esc(p.course)} · ${esc(p.date)} · 共 ${p.total || 0} 题，正确 ${p.correct || 0} 题（正确率 ${p.total ? Math.round((p.correct / p.total) * 100) : 0}%）</div>
+          </div>
+          <button class="chip-btn" data-delete-practice="${p.id}">删除</button>
+        </div>
+      </article>`).join("") : '<div class="empty">暂时没有练习记录。</div>';
+  }
+
+  function renderStats() {
+    let courses = getCourses();
+    $("#statsNotes").textContent = data.notes.length;
+    $("#statsMistakes").textContent = data.mistakes.length;
+    $("#statsReviews").textContent = data.reviews.filter(x => x.completed_at).length;
+    $("#statsQuestions").textContent = data.practice.reduce((a, x) => a + (Number(x.total) || 0), 0);
+    $("#statsCourseBars").innerHTML = courses.map(c => {
+      let n = data.notes.filter(x => x.course === c.name).length;
+      return `<div class="bar-row"><span>${esc(c.name)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100, n * 10)}%"></div></div><b>${n}</b></div>`;
+    }).join("");
+  }
+
+  function openModal(title, html, submit) {
+    $("#modalTitle").textContent = title;
+    $("#modalBody").innerHTML = html;
+    $("#modalBackdrop").classList.add("show");
+    if (submit) {
+      $("#modalBody").onsubmit = e => { e.preventDefault(); submit(new FormData(e.target)); };
+    } else {
+      $("#modalBody").onsubmit = null;
+    }
+  }
+  function closeModal() { $("#modalBackdrop").classList.remove("show"); }
+  function courseOptions(selected = "") { return getCourses().map(c => `<option ${selected === c.name ? "selected" : ""}>${esc(c.name)}</option>`).join(""); }
+  function chapterOptions(course, selected = "") {
+    let c = getCourses().find(x => x.name === course);
+    let chs = (c?.chapters && c.chapters.length) ? c.chapters : ["未分类章节"];
+    return chs.map(x => `<option ${selected === x ? "selected" : ""}>${esc(x)}</option>`).join("");
+  }
+
+  function manageCoursesModal() {
+    let list = getCourses();
+    let listHtml = list.map((c, idx) => `
+      <div class="course-manage-item">
+        <div>
+          <b>${esc(c.name)}</b> <span class="badge-mini">${esc(c.group)}</span>
+          <small>章节：${esc((c.chapters || []).join(" / ") || "无")}</small>
+        </div>
+        <button type="button" class="chip-btn" data-del-course="${idx}">删除</button>
+      </div>`).join("");
+
+    openModal("管理课程与章节（支持云端同步）", `
+      <form id="addCourseForm">
+        <div class="form-grid">
+          <label>新课程名称<input name="name" required placeholder="例如：专业案例分析"></label>
+          <label>所属分组<input name="group" value="自定义课程" placeholder="例如：基础上 / 基础下 / 专业课"></label>
+        </div>
+        <label>初始章节（用逗号分隔，可留空）<input name="chapters" placeholder="第一章, 第二章, 历年真题"></label>
+        <div class="form-actions" style="margin-top:8px;margin-bottom:16px">
+          <button type="submit" class="btn btn-primary">＋ 添加这门课程</button>
+        </div>
+      </form>
+      <div class="section-divider" style="margin-top:6px"><span>当前已有课程（共 ${list.length} 门）</span></div>
+      <div style="max-height:260px;overflow-y:auto;padding-right:4px">${listHtml}</div>
+    `, f => {
+      let v = Object.fromEntries(f.entries());
+      let name = v.name.trim();
+      if (!name) return;
+      let current = [...getCourses()];
+      if (current.some(x => x.name === name)) { toast("该课程名称已存在"); return; }
+      let chapters = v.chapters.split(/[,，]/).map(x => x.trim()).filter(Boolean);
+      if (!chapters.length) chapters = ["第一章", "核心考点"];
+      current.push({ group: v.group.trim() || "自定义课程", name, chapters });
+      data.custom_courses = current;
       saveLocal();
-      toast("备份数据已合并导入");
-    } catch (e) { toast("导入失败：" + e.message); }
-  };
-  r.readAsText(file);
-}
-function exportMarkdown() {
-  let md = data.notes.map(n => `# ${n.title}\n\n> ${n.course} / ${n.chapter || ""}\n\n${n.content || ""}\n\n标签：${(n.tags || []).join(", ")}\n\n---\n`).join("\n");
-  download(new Blob([md], { type: "text/markdown;charset=utf-8" }), "岩土备考笔记-" + today() + ".md");
-}
-function importMarkdown(file) {
-  let r = new FileReader();
-  r.onload = () => {
-    let title = (file.name || "导入笔记").replace(/\.(md|markdown|txt)$/i, "");
-    data.notes.unshift({ id: uid(), title, course: "土力学与地基基础", chapter: "待分类", content: r.result, tags: ["Markdown导入"], updated_at: today() });
+      toast(`已添加课程：${name}`);
+      manageCoursesModal();
+    });
+  }
+
+  function noteForm(n = {}) {
+    let courses = getCourses();
+    let defaultC = n.course || courses[0]?.name || "土力学与地基基础";
+    openModal(n.id ? "编辑知识卡片" : "新建知识卡片", `
+      <form>
+        <div class="form-grid">
+          <label>所属科目<select name="course" id="noteCourse">${courseOptions(defaultC)}</select></label>
+          <label>对应章节<select name="chapter" id="noteChapter">${chapterOptions(defaultC, n.chapter || "")}</select></label>
+        </div>
+        <label>卡片标题<input name="title" required value="${esc(n.title || "")}" placeholder="例如：有效应力原理与渗透力计算"></label>
+        <label>卡片正文<textarea name="content" rows="8" placeholder="支持多行记录核心公式、适用条件与规范条文…">${esc(n.content || "")}</textarea></label>
+        <label>标签（逗号分隔）<input name="tags" value="${esc((n.tags || []).join(", "))}" placeholder="核心公式, 高频考点"></label>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
+          <button class="btn btn-primary">保存卡片</button>
+        </div>
+      </form>`, f => {
+      let v = Object.fromEntries(f.entries());
+      let obj = { ...n, id: n.id || uid(), ...v, tags: v.tags.split(/[,，]/).map(x => x.trim()).filter(Boolean), updated_at: today() };
+      let i = data.notes.findIndex(x => x.id === obj.id);
+      if (i >= 0) data.notes[i] = obj; else data.notes.unshift(obj);
+      saveLocal();
+      closeModal();
+      toast("知识卡片已保存");
+    });
+    $("#noteCourse").onchange = e => $("#noteChapter").innerHTML = chapterOptions(e.target.value);
+  }
+
+  function mistakeForm(m = {}) {
+    let courses = getCourses();
+    let defaultC = m.course || courses[0]?.name || "土力学与地基基础";
+    openModal(m.id ? "编辑错题卡片" : "记录错题卡片", `
+      <form>
+        <div class="form-grid">
+          <label>所属科目<select name="course">${courseOptions(defaultC)}</select></label>
+          <label>章节<input name="chapter" value="${esc(m.chapter || "")}" placeholder="例如：土的抗剪强度"></label>
+        </div>
+        <label>题目摘要<input name="title" required value="${esc(m.title || "")}" placeholder="简要概括本题考点"></label>
+        <label>题干条件与错误过程<textarea name="question" rows="3">${esc(m.question || "")}</textarea></label>
+        <label>错误原因（高亮标出）<textarea name="reason" rows="2" placeholder="概念混淆、单位换算遗漏、公式正负号错误…">${esc(m.reason || "")}</textarea></label>
+        <label>正确思路与结论<textarea name="solution" rows="3">${esc(m.solution || "")}</textarea></label>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
+          <button class="btn btn-primary">保存错题</button>
+        </div>
+      </form>`, f => {
+      let v = Object.fromEntries(f.entries()), obj = { ...m, id: m.id || uid(), ...v, created_at: m.created_at || today() };
+      let i = data.mistakes.findIndex(x => x.id === obj.id);
+      if (i >= 0) data.mistakes[i] = obj; else data.mistakes.unshift(obj);
+      saveLocal();
+      closeModal();
+      toast("错题卡片已保存");
+    });
+  }
+
+  function practiceForm() {
+    openModal("添加练习记录", `
+      <form>
+        <label>练习主题<input name="title" required placeholder="例如：2023年上午公共基础真题"></label>
+        <label>所属科目<select name="course">${courseOptions()}</select></label>
+        <div class="form-grid">
+          <label>总题数<input name="total" type="number" min="1" value="20"></label>
+          <label>正确题数<input name="correct" type="number" min="0" value="15"></label>
+        </div>
+        <label>练习日期<input type="date" name="date" value="${today()}"></label>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
+          <button class="btn btn-primary">保存记录</button>
+        </div>
+      </form>`, f => {
+      let v = Object.fromEntries(f.entries());
+      data.practice.unshift({ id: uid(), ...v, total: Number(v.total), correct: Number(v.correct) });
+      saveLocal();
+      closeModal();
+      toast("练习记录已保存");
+    });
+  }
+
+  function addReviewFromNote(n) {
+    if (data.reviews.some(r => r.note_id === n.id)) { toast("该卡片已在复习计划中"); return; }
+    data.reviews.unshift({ id: uid(), note_id: n.id, title: n.title, course: n.course, chapter: n.chapter, answer: n.content, next_date: today(), interval: 0 });
     saveLocal();
-    toast("Markdown 已导入");
-  };
-  r.readAsText(file);
-}
+    toast("已加入今日复习队列");
+  }
 
-/* Supabase 云端同步逻辑 */
-function config() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "{}"); } catch (e) { return {}; } }
-function setCloudStatus(msg, online = false) {
-  $("#cloudStatus").textContent = msg;
-  $("#syncBadge").textContent = online ? "已连接" : "本地";
-  $("#syncBadge").classList.toggle("online", online);
-  $("#syncDot").classList.toggle("online", online);
-}
-async function initCloud() {
-  let c = config();
-  $("#supabaseUrl").value = c.url || "";
-  $("#supabaseKey").value = c.key || "";
-  if (!c.url || !c.key) { setCloudStatus("尚未配置 Supabase。请填写 Project URL 和公开密钥。"); return; }
-  try {
-    if (!window.supabase) { setCloudStatus("Supabase SDK 加载失败，请刷新页面重试。"); return; }
-    sbClient = window.supabase.createClient(c.url, c.key);
-    let { data: { session } } = await sbClient.auth.getSession();
-    currentUser = session?.user || null;
+  function gradeReview(id, grade) {
+    let r = data.reviews.find(x => x.id === id);
+    if (!r) return;
+    r.interval = grade === "again" ? 1 : Math.max(1, Math.round((r.interval || 1) * ({ hard: 1.5, good: 2, easy: 3 }[grade])));
+    r.next_date = new Date(Date.now() + r.interval * 86400000).toISOString().slice(0, 10);
+    r.completed_at = today();
+    saveLocal();
+    toast(`复习完成，下次安排在 ${r.next_date}`);
+  }
+
+  function exportJSON() {
+    let blob = new Blob([JSON.stringify({ version: 1, exported_at: new Date().toISOString(), data }, null, 2)], { type: "application/json" });
+    download(blob, "岩土备考库备份-" + today() + ".json");
+  }
+  function download(blob, name) {
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  function importJSON(file) {
+    let r = new FileReader();
+    r.onload = () => {
+      try {
+        let obj = JSON.parse(r.result), incoming = obj.data || obj;
+        if (!incoming.notes || !incoming.mistakes) throw Error("文件格式不正确");
+        for (let k of ["notes", "mistakes", "reviews", "practice"]) {
+          let map = new Map([...data[k], ...(incoming[k] || [])].map(x => [x.id, x]));
+          data[k] = [...map.values()];
+        }
+        if (Array.isArray(incoming.custom_courses) && incoming.custom_courses.length) {
+          data.custom_courses = incoming.custom_courses;
+        }
+        saveLocal();
+        toast("备份数据已合并导入");
+      } catch (e) { toast("导入失败：" + e.message); }
+    };
+    r.readAsText(file);
+  }
+  function exportMarkdown() {
+    let md = data.notes.map(n => `# ${n.title}\n\n> ${n.course} / ${n.chapter || ""}\n\n${n.content || ""}\n\n标签：${(n.tags || []).join(", ")}\n\n---\n`).join("\n");
+    download(new Blob([md], { type: "text/markdown;charset=utf-8" }), "岩土备考笔记-" + today() + ".md");
+  }
+  function importMarkdown(file) {
+    let r = new FileReader();
+    r.onload = () => {
+      let title = (file.name || "导入笔记").replace(/\.(md|markdown|txt)$/i, "");
+      data.notes.unshift({ id: uid(), title, course: getCourses()[0]?.name || "土力学与地基基础", chapter: "待分类", content: r.result, tags: ["Markdown导入"], updated_at: today() });
+      saveLocal();
+      toast("Markdown 已导入");
+    };
+    r.readAsText(file);
+  }
+
+  function config() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "{}"); } catch (e) { return {}; } }
+  function setCloudStatus(msg, online = false) {
+    $("#cloudStatus").textContent = msg;
+    $("#syncBadge").textContent = online ? "已连接" : "本地";
+    $("#syncBadge").classList.toggle("online", online);
+    $("#syncDot").classList.toggle("online", online);
+  }
+  async function initCloud() {
+    let c = config();
+    $("#supabaseUrl").value = c.url || "";
+    $("#supabaseKey").value = c.key || "";
+    if (!c.url || !c.key) { setCloudStatus("尚未配置 Supabase。请填写 Project URL 和公开密钥。"); return; }
+    try {
+      if (!window.supabase) { setCloudStatus("Supabase SDK 加载失败，请刷新页面重试。"); return; }
+      sbClient = window.supabase.createClient(c.url, c.key);
+      let { data: { session } } = await sbClient.auth.getSession();
+      currentUser = session?.user || null;
+      updateUser();
+      if (currentUser) {
+        setCloudStatus("已登录：" + currentUser.email + "，云端同步就绪。", true);
+        await pullCloud();
+      } else {
+        setCloudStatus("云端连接配置成功！请在下方注册或登录账号。");
+      }
+    } catch (e) { setCloudStatus("连接失败：" + e.message); }
+  }
+  function updateUser() {
+    $("#userEmail").textContent = currentUser?.email || "点击配置 Supabase 同步";
+    $("#userLabel").textContent = currentUser ? "云端已登录" : "未登录云端";
+    $("#authPanel").style.display = currentUser ? "none" : "block";
+  }
+  async function auth(action) {
+    if (!sbClient) { toast("请先点击「保存配置并连接」"); return; }
+    let email = $("#authEmail").value.trim(), password = $("#authPassword").value;
+    if (!email || !password) { toast("请输入邮箱和密码"); return; }
+    let res = action === "signup" ? await sbClient.auth.signUp({ email, password }) : await sbClient.auth.signInWithPassword({ email, password });
+    if (res.error) { toast("操作失败：" + res.error.message); return; }
+    if (action === "signup" && !res.data.session) { toast("注册成功！请去邮箱查收验证邮件（或在 Supabase 关闭邮箱验证）"); return; }
+    currentUser = res.data.user;
     updateUser();
-    if (currentUser) {
-      setCloudStatus("已登录：" + currentUser.email + "，云端同步就绪。", true);
-      await pullCloud();
-    } else {
-      setCloudStatus("云端连接配置成功！请在下方注册或登录账号。");
-    }
-  } catch (e) { setCloudStatus("连接失败：" + e.message); }
-}
-function updateUser() {
-  $("#userEmail").textContent = currentUser?.email || "点击配置 Supabase 同步";
-  $("#userLabel").textContent = currentUser ? "云端已登录" : "未登录云端";
-  $("#authPanel").style.display = currentUser ? "none" : "block";
-}
-async function auth(action) {
-  if (!sbClient) { toast("请先点击「保存配置并连接」"); return; }
-  let email = $("#authEmail").value.trim(), password = $("#authPassword").value;
-  if (!email || !password) { toast("请输入邮箱和密码"); return; }
-  let res = action === "signup" ? await sbClient.auth.signUp({ email, password }) : await sbClient.auth.signInWithPassword({ email, password });
-  if (res.error) { toast("操作失败：" + res.error.message); return; }
-  if (action === "signup" && !res.data.session) { toast("注册成功！请去邮箱查收验证邮件（或在 Supabase 关闭邮箱验证）"); return; }
-  currentUser = res.data.user;
-  updateUser();
-  setCloudStatus("登录成功，正在同步数据…", true);
-  await pullCloud();
-  toast("登录成功");
-}
-async function pullCloud() {
-  if (!sbClient || !currentUser) return;
-  let { data: row, error } = await sbClient.from("study_data").select("payload,updated_at").eq("user_id", currentUser.id).maybeSingle();
-  if (error) { setCloudStatus("读取云端失败：" + error.message); return; }
-  if (row?.payload) {
-    let remoteTime = new Date(row.updated_at || 0).getTime(), localTime = new Date(data.updated_at || 0).getTime();
-    if (!hadLocalData || remoteTime > localTime) {
-      data = { ...defaultData(), ...row.payload };
-      hadLocalData = true;
-      localStorage.setItem(DB_KEY, JSON.stringify(data));
-      idbPut(data);
-      renderAll();
-      setCloudStatus("已从云端拉取最新数据。", true);
-    } else {
-      setCloudStatus("本地数据为最新。点击「立即同步云端」可上传备份。", true);
-    }
-  } else {
-    setCloudStatus("云端暂无存档，点击「立即同步云端」创建首次云备份。", true);
+    setCloudStatus("登录成功，正在同步数据…", true);
+    await pullCloud();
+    toast("登录成功");
   }
-}
-async function pushCloud() {
-  if (!sbClient || !currentUser) { toast("请先登录账号"); return; }
-  let payload = { ...data, updated_at: new Date().toISOString() };
-  let { error } = await sbClient.from("study_data").upsert({ user_id: currentUser.id, payload, updated_at: payload.updated_at }, { onConflict: "user_id" });
-  if (error) { setCloudStatus("同步失败：" + error.message); toast("同步失败：" + error.message); return; }
-  data = payload;
-  hadLocalData = true;
-  localStorage.setItem(DB_KEY, JSON.stringify(data));
-  idbPut(data);
-  setCloudStatus("云端同步成功 · " + new Date().toLocaleTimeString(), true);
-  toast("已成功同步到云端");
-}
-
-document.addEventListener("click", e => {
-  let v = e.target.closest("[data-view]")?.dataset.view;
-  if (v) switchView(v);
-  let jc = e.target.closest("[data-jump-course]")?.dataset.jumpCourse;
-  if (jc) { selectedCourse = jc; switchView("knowledge"); }
-  let c = e.target.closest("[data-course]")?.dataset.course;
-  if (c) { selectedCourse = c; renderKnowledge(); }
-  let b = e.target.closest("[data-edit-note]");
-  if (b) noteForm(data.notes.find(x => x.id === b.dataset.editNote));
-  b = e.target.closest("[data-delete-note]");
-  if (b && confirm("确定删除这张知识卡片？")) { data.notes = data.notes.filter(x => x.id !== b.dataset.deleteNote); saveLocal(); }
-  b = e.target.closest("[data-review-note]");
-  if (b) { let n = data.notes.find(x => x.id === b.dataset.reviewNote); if (n) addReviewFromNote(n); }
-  b = e.target.closest("[data-edit-mistake]");
-  if (b) mistakeForm(data.mistakes.find(x => x.id === b.dataset.editMistake));
-  b = e.target.closest("[data-delete-mistake]");
-  if (b && confirm("确定删除这条错题？")) { data.mistakes = data.mistakes.filter(x => x.id !== b.dataset.deleteMistake); saveLocal(); }
-  b = e.target.closest("[data-show-answer]");
-  if (b) {
-    let r = data.reviews.find(x => x.id === b.dataset.showAnswer), el = $("#answer-" + b.dataset.showAnswer);
-    el.innerHTML = `<div class="review-answer">${esc(r?.answer || "暂未填写参考答案")}</div><div class="review-grade"><button class="chip-btn" data-grade="again" data-id="${r.id}">没记住 (1天后)</button><button class="chip-btn" data-grade="hard" data-id="${r.id}">有点难</button><button class="chip-btn" data-grade="good" data-id="${r.id}">记住了</button><button class="chip-btn" data-grade="easy" data-id="${r.id}">很熟练</button></div>`;
+  async function pullCloud() {
+    if (!sbClient || !currentUser) return;
+    let { data: row, error } = await sbClient.from("study_data").select("payload,updated_at").eq("user_id", currentUser.id).maybeSingle();
+    if (error) { setCloudStatus("读取云端失败：" + error.message); return; }
+    if (row?.payload) {
+      let remoteTime = new Date(row.updated_at || 0).getTime(), localTime = new Date(data.updated_at || 0).getTime();
+      if (!hadLocalData || remoteTime > localTime) {
+        data = { ...defaultData(), ...row.payload };
+        hadLocalData = true;
+        localStorage.setItem(DB_KEY, JSON.stringify(data));
+        idbPut(data);
+        renderAll();
+        setCloudStatus("已从云端拉取最新数据。", true);
+      } else {
+        setCloudStatus("本地数据为最新。点击「立即同步云端」可上传备份。", true);
+      }
+    } else {
+      setCloudStatus("云端暂无存档，点击「立即同步云端」创建首次云备份。", true);
+    }
   }
-  b = e.target.closest("[data-grade]");
-  if (b) gradeReview(b.dataset.id, b.dataset.grade);
-  b = e.target.closest("[data-review-done]");
-  if (b) gradeReview(b.dataset.reviewDone, "good");
-  b = e.target.closest("[data-delete-review]");
-  if (b) { data.reviews = data.reviews.filter(x => x.id !== b.dataset.deleteReview); saveLocal(); }
-  b = e.target.closest("[data-delete-practice]");
-  if (b) { data.practice = data.practice.filter(x => x.id !== b.dataset.deletePractice); saveLocal(); }
-  b = e.target.closest("[data-review-filter]");
-  if (b) { reviewFilter = b.dataset.reviewFilter; $$("[data-review-filter]").forEach(x => x.classList.toggle("active", x === b)); renderReviews(); }
-  if (e.target.id === "cancelModal") closeModal();
-});
+  async function pushCloud() {
+    if (!sbClient || !currentUser) { toast("请先登录账号"); return; }
+    let payload = { ...data, updated_at: new Date().toISOString() };
+    let { error } = await sbClient.from("study_data").upsert({ user_id: currentUser.id, payload, updated_at: payload.updated_at }, { onConflict: "user_id" });
+    if (error) { setCloudStatus("同步失败：" + error.message); toast("同步失败：" + error.message); return; }
+    data = payload;
+    hadLocalData = true;
+    localStorage.setItem(DB_KEY, JSON.stringify(data));
+    idbPut(data);
+    setCloudStatus("云端同步成功 · " + new Date().toLocaleTimeString(), true);
+    toast("已成功同步到云端");
+  }
 
-$("#menuBtn").onclick = () => $("#sidebar").classList.toggle("open");
-$("#calPrev").onclick = () => { calDate.setMonth(calDate.getMonth() - 1); renderCalendar(); };
-$("#calNext").onclick = () => { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); };
-$("#quickCreateTrigger").onclick = e => { if (!e.target.closest("button")) noteForm(); };
-$("#quickNoteBtn").onclick = () => noteForm();
-$("#quickMistakeBtn").onclick = () => mistakeForm();
-$("#newNoteBtn").onclick = () => noteForm();
-$("#newMistakeBtn").onclick = () => mistakeForm();
-$("#newPracticeBtn").onclick = practiceForm;
-$("#modalClose").onclick = closeModal;
-$("#modalBackdrop").onclick = e => { if (e.target.id === "modalBackdrop") closeModal(); };
-$("#courseSearch").oninput = renderKnowledge;
-$("#groupFilter").onchange = () => { selectedCourse = "全部"; renderKnowledge(); };
-$("#mistakeSearch").oninput = renderMistakes;
-$("#mistakeCourseFilter").onchange = renderMistakes;
-$("#importMdBtn").onclick = () => $("#mdFile").click();
-$("#mdFile").onchange = e => { if (e.target.files[0]) importMarkdown(e.target.files[0]); e.target.value = ""; };
-$("#exportData").onclick = exportJSON;
-$("#exportMarkdown").onclick = exportMarkdown;
-$("#importBackup").onchange = e => { if (e.target.files[0]) importJSON(e.target.files[0]); e.target.value = ""; };
-$("#saveCloud").onclick = () => {
-  let url = $("#supabaseUrl").value.trim().replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
-  let key = $("#supabaseKey").value.trim();
-  if (!url || !key) { toast("请填写 URL 和公开密钥"); return; }
-  $("#supabaseUrl").value = url;
-  localStorage.setItem(CFG_KEY, JSON.stringify({ url, key }));
-  toast("配置已保存，正在连接…");
-  initCloud();
-};
-$("#signIn").onclick = () => auth("signin");
-$("#signUp").onclick = () => auth("signup");
-$("#signOut").onclick = async () => { if (sbClient) await sbClient.auth.signOut(); currentUser = null; updateUser(); setCloudStatus("已退出登录。"); toast("已退出登录"); };
-$("#syncNow").onclick = pushCloud;
+  document.addEventListener("click", e => {
+    let v = e.target.closest("[data-view]")?.dataset.view;
+    if (v) switchView(v);
+    let jc = e.target.closest("[data-jump-course]")?.dataset.jumpCourse;
+    if (jc) { selectedCourse = jc; switchView("knowledge"); }
+    let c = e.target.closest("[data-course]")?.dataset.course;
+    if (c) { selectedCourse = c; renderKnowledge(); }
+    let delC = e.target.closest("[data-del-course]");
+    if (delC) {
+      let idx = Number(delC.dataset.delCourse);
+      let current = [...getCourses()];
+      if (current.length <= 1) { toast("至少保留一门课程"); return; }
+      let removed = current.splice(idx, 1)[0];
+      data.custom_courses = current;
+      if (selectedCourse === removed.name) selectedCourse = "全部";
+      saveLocal();
+      toast(`已删除课程：${removed.name}`);
+      manageCoursesModal();
+    }
+    let b = e.target.closest("[data-edit-note]");
+    if (b) noteForm(data.notes.find(x => x.id === b.dataset.editNote));
+    b = e.target.closest("[data-delete-note]");
+    if (b && confirm("确定删除这张知识卡片？")) { data.notes = data.notes.filter(x => x.id !== b.dataset.deleteNote); saveLocal(); }
+    b = e.target.closest("[data-review-note]");
+    if (b) { let n = data.notes.find(x => x.id === b.dataset.reviewNote); if (n) addReviewFromNote(n); }
+    b = e.target.closest("[data-edit-mistake]");
+    if (b) mistakeForm(data.mistakes.find(x => x.id === b.dataset.editMistake));
+    b = e.target.closest("[data-delete-mistake]");
+    if (b && confirm("确定删除这条错题？")) { data.mistakes = data.mistakes.filter(x => x.id !== b.dataset.deleteMistake); saveLocal(); }
+    b = e.target.closest("[data-show-answer]");
+    if (b) {
+      let r = data.reviews.find(x => x.id === b.dataset.showAnswer), el = $("#answer-" + b.dataset.showAnswer);
+      el.innerHTML = `<div class="review-answer">${esc(r?.answer || "暂未填写参考答案")}</div><div class="review-grade"><button class="chip-btn" data-grade="again" data-id="${r.id}">没记住 (1天后)</button><button class="chip-btn" data-grade="hard" data-id="${r.id}">有点难</button><button class="chip-btn" data-grade="good" data-id="${r.id}">记住了</button><button class="chip-btn" data-grade="easy" data-id="${r.id}">很熟练</button></div>`;
+    }
+    b = e.target.closest("[data-grade]");
+    if (b) gradeReview(b.dataset.id, b.dataset.grade);
+    b = e.target.closest("[data-review-done]");
+    if (b) gradeReview(b.dataset.reviewDone, "good");
+    b = e.target.closest("[data-delete-review]");
+    if (b) { data.reviews = data.reviews.filter(x => x.id !== b.dataset.deleteReview); saveLocal(); }
+    b = e.target.closest("[data-delete-practice]");
+    if (b) { data.practice = data.practice.filter(x => x.id !== b.dataset.deletePractice); saveLocal(); }
+    b = e.target.closest("[data-review-filter]");
+    if (b) { reviewFilter = b.dataset.reviewFilter; $$("[data-review-filter]").forEach(x => x.classList.toggle("active", x === b)); renderReviews(); }
+    if (e.target.id === "cancelModal") closeModal();
+  });
 
-load();
+  $("#menuBtn").onclick = () => $("#sidebar").classList.toggle("open");
+  $("#calPrev").onclick = () => { calDate.setMonth(calDate.getMonth() - 1); renderCalendar(); };
+  $("#calNext").onclick = () => { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); };
+  $("#quickCreateTrigger").onclick = e => { if (!e.target.closest("button")) noteForm(); };
+  $("#quickNoteBtn").onclick = () => noteForm();
+  $("#quickMistakeBtn").onclick = () => mistakeForm();
+  $("#newNoteBtn").onclick = () => noteForm();
+  $("#newMistakeBtn").onclick = () => mistakeForm();
+  $("#newPracticeBtn").onclick = practiceForm;
+  $("#manageCoursesSideBtn").onclick = manageCoursesModal;
+  $("#manageCoursesHomeBtn").onclick = manageCoursesModal;
+  $("#manageCoursesBtn").onclick = manageCoursesModal;
+  $("#modalClose").onclick = closeModal;
+  $("#modalBackdrop").onclick = e => { if (e.target.id === "modalBackdrop") closeModal(); };
+  $("#courseSearch").oninput = renderKnowledge;
+  $("#groupFilter").onchange = () => { selectedCourse = "全部"; renderKnowledge(); };
+  $("#mistakeSearch").oninput = renderMistakes;
+  $("#mistakeCourseFilter").onchange = renderMistakes;
+  $("#importMdBtn").onclick = () => $("#mdFile").click();
+  $("#mdFile").onchange = e => { if (e.target.files[0]) importMarkdown(e.target.files[0]); e.target.value = ""; };
+  $("#exportData").onclick = exportJSON;
+  $("#exportMarkdown").onclick = exportMarkdown;
+  $("#importBackup").onchange = e => { if (e.target.files[0]) importJSON(e.target.files[0]); e.target.value = ""; };
+  $("#saveCloud").onclick = () => {
+    let url = $("#supabaseUrl").value.trim().replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
+    let key = $("#supabaseKey").value.trim();
+    if (!url || !key) { toast("请填写 URL 和公开密钥"); return; }
+    $("#supabaseUrl").value = url;
+    localStorage.setItem(CFG_KEY, JSON.stringify({ url, key }));
+    toast("配置已保存，正在连接…");
+    initCloud();
+  };
+  $("#signIn").onclick = () => auth("signin");
+  $("#signUp").onclick = () => auth("signup");
+  $("#signOut").onclick = async () => { if (sbClient) await sbClient.auth.signOut(); currentUser = null; updateUser(); setCloudStatus("已退出登录。"); toast("已退出登录"); };
+  $("#syncNow").onclick = pushCloud;
+
+  load();
+})();
 </script>
 </body>
 </html>
