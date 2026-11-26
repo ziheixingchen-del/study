@@ -93,7 +93,6 @@ body {
   z-index: 9;
 }
 
-/* 顶部考试空间切换器 */
 .exam-switcher {
   background: #ffffff;
   border: 1px solid var(--border);
@@ -168,7 +167,6 @@ body {
 .nav-txt { flex: 1; text-align: left; }
 .nav-cnt { font-size: 11px; color: var(--text-muted); }
 
-/* 侧边栏月度打卡日历 */
 .side-calendar {
   margin-top: 14px;
   padding: 10px 6px;
@@ -239,10 +237,10 @@ body {
   border: 0;
   background: transparent;
   color: var(--text-sub);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  padding: 0 5px;
+  padding: 1px 5px;
   border-radius: 4px;
 }
 .outline-add-btn:hover { background: #e5e7eb; color: var(--text-main); }
@@ -290,6 +288,16 @@ body {
   gap: 6px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
+.countdown-pill {
+  background: #fef9c3;
+  border: 1px solid #fde047;
+  color: #854d0e;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
 .top-actions { display: flex; align-items: center; gap: 12px; }
 .today { font-size: 12px; color: var(--text-muted); }
 .icon-btn, .mobile-menu { border: 0; background: transparent; font-size: 17px; color: var(--text-sub); cursor: pointer; }
@@ -305,10 +313,44 @@ body {
 .view { display: none; }
 .view.active { display: block; }
 
-.feed-header { margin: 8px 0 20px; }
-.feed-icon { font-size: 30px; line-height: 1; margin-bottom: 8px; color: var(--text-main); }
-.feed-header h1 { font-size: 26px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.5px; }
+.feed-header { margin: 8px 0 18px; }
+.feed-icon { font-size: 28px; line-height: 1; margin-bottom: 6px; color: var(--text-main); }
+.feed-header h1 { font-size: 25px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.5px; }
 .feed-sub { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+/* 备考阶段与进度看板 */
+.sprint-banner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sprint-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+}
+.sprint-card span { display: block; font-size: 11px; color: var(--text-muted); }
+.sprint-card strong { display: block; font-size: 22px; margin: 4px 0 2px; color: var(--text-main); }
+.sprint-card small { display: block; font-size: 11px; color: var(--text-sub); }
+.progress-mini-bar { height: 5px; background: #f1f3f5; border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.progress-mini-fill { height: 100%; background: #1f2329; border-radius: 99px; transition: 0.3s; }
+
+/* 模拟考计时浮条 */
+.mock-timer-bar {
+  background: #1f2329;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-hover);
+}
+.mock-timer-clock { font-family: monospace; font-size: 18px; font-weight: 700; color: #fde047; }
 
 /* 快捷创建/打卡条 */
 .quick-create-bar {
@@ -337,9 +379,16 @@ body {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 .chip-btn:hover { background: #f3f4f6; }
 .chip-btn.primary-chip { background: #1f2329; color: #fff; border-color: #1f2329; }
+.chip-btn.drive-chip { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; font-weight: 600; }
+.chip-btn.drive-chip:hover { background: #dbeafe; }
+.chip-btn.slay-chip { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
 
 /* 核心白纸卡片 */
 .card-feed { display: flex; flex-direction: column; gap: 14px; }
@@ -381,6 +430,7 @@ body {
 .sn-badge.status-valid { background: #dcfce7; color: #166534; }
 .sn-badge.status-updated { background: #fef08a; color: #854d0e; }
 .sn-badge.status-abolished { background: #fee2e2; color: #991b1b; }
+.sn-badge.err-badge { background: #fee2e2; color: #991b1b; }
 
 .sn-card-body {
   font-size: 14px;
@@ -388,7 +438,6 @@ body {
   line-height: 1.75;
   white-space: pre-wrap;
 }
-.sn-card-body p { margin: 0; }
 mark {
   background: var(--highlight);
   color: inherit;
@@ -396,7 +445,6 @@ mark {
   border-radius: 3px;
 }
 
-/* 卡片内图片 */
 .card-images {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -488,7 +536,7 @@ mark {
 }
 
 .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-.toolbar input { flex: 1; min-width: 180px; }
+.toolbar input { flex: 1; min-width: 170px; }
 input, textarea, select {
   font: inherit;
   border: 1px solid var(--border);
@@ -519,8 +567,7 @@ input:focus, textarea:focus, select:focus {
 .btn-primary:hover { background: #373d47; }
 .btn-outline { border: 1px solid var(--border); background: #ffffff; color: var(--text-main); }
 .btn-outline:hover { background: #f3f4f6; }
-.text-btn { border: 0; background: none; color: var(--text-sub); font-weight: 600; font-size: 12px; cursor: pointer; }
-.text-btn:hover { color: var(--text-main); }
+.btn-active-pill { background: #fef08a; border: 1px solid #fde047; color: #713f12; }
 
 .course-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
 .course-pill {
@@ -535,7 +582,7 @@ input:focus, textarea:focus, select:focus {
 .course-pill:hover { background: #f3f4f6; }
 .course-pill.active { background: #1f2329; color: #ffffff; border-color: #1f2329; }
 
-/* 刷题选项样式 */
+/* 刷题选项 */
 .quiz-options { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .quiz-opt {
   border: 1px solid var(--border);
@@ -549,11 +596,10 @@ input:focus, textarea:focus, select:focus {
   transition: 0.12s;
 }
 .quiz-opt:hover { background: #f3f4f6; border-color: #cbd5e1; }
-.quiz-opt.selected { border-color: #1f2329; background: #eff1f5; font-weight: 600; }
 .quiz-opt.correct { border-color: #16a34a; background: #dcfce7; color: #14532d; font-weight: 600; }
 .quiz-opt.wrong { border-color: #dc2626; background: #fee2e2; color: #7f1d1d; }
 
-/* 双栏对照布局（复习与复盘时激活） */
+/* 双栏对照布局 */
 .dual-pane {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -582,7 +628,7 @@ input:focus, textarea:focus, select:focus {
   white-space: pre-wrap;
 }
 
-/* 思维导图树状可视化 */
+/* 思维导图 */
 .mindmap-canvas {
   background: #ffffff;
   border: 1px solid var(--border);
@@ -601,7 +647,6 @@ input:focus, textarea:focus, select:focus {
   background: #f8f9fa;
   border: 1px solid var(--border);
   font-size: 13px;
-  transition: 0.15s;
 }
 .mm-row:hover { border-color: #9ca3af; background: #f3f4f6; }
 .mm-level-0 > .mm-row { background: #1f2329; color: #fff; font-weight: 700; font-size: 15px; border-color: #1f2329; }
@@ -676,11 +721,6 @@ input:focus, textarea:focus, select:focus {
   border-radius: 14px;
   background: #ffffff;
 }
-
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat-mini { padding: 16px; text-align: center; }
-.stat-mini span { font-size: 12px; color: var(--text-muted); display: block; }
-.stat-mini strong { font-size: 26px; display: block; margin-top: 4px; }
 
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 label { display: block; font-size: 12px; color: var(--text-sub); margin: 10px 0; font-weight: 500; }
@@ -779,7 +819,7 @@ label input, label textarea, label select { margin-top: 5px; }
   .main { margin-left: 0; }
   .mobile-menu { display: block; }
   .dual-pane, .local-lib-grid, .form-grid { grid-template-columns: 1fr; }
-  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .sprint-banner { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -787,22 +827,21 @@ label input, label textarea, label select { margin-top: 5px; }
 <div class="app-shell">
   <div class="rail">
     <div class="rail-logo" title="全周期备考台">学</div>
-    <button class="rail-btn active" data-view="home" title="每日学习与艾宾浩斯复习">⌂</button>
-    <button class="rail-btn" data-view="quiz" title="真题刷题与AI复盘">✎</button>
-    <button class="rail-btn" data-view="knowledge" title="课程与每日学习笔记">▤</button>
+    <button class="rail-btn active" data-view="home" title="倒计时看板与艾宾浩斯复习">⌂</button>
+    <button class="rail-btn" data-view="quiz" title="真题刷题、错题池与模拟考">✎</button>
+    <button class="rail-btn" data-view="knowledge" title="课程学习与公式速查">▤</button>
     <button class="rail-btn" data-view="mindmap" title="交互式思维导图">❖</button>
-    <button class="rail-btn" data-view="standards" title="专业规范台账与本地PDF库">§</button>
+    <button class="rail-btn" data-view="standards" title="规范云盘链接与本地PDF库">§</button>
     <div class="rail-bottom">
       <button class="rail-btn" data-view="settings" title="云端与备份">⚙</button>
     </div>
   </div>
 
   <aside class="sidebar" id="sidebar">
-    <!-- 自由切换考试空间（岩土基础 / 岩土专业 / 一建 / 一造安装 / 考研） -->
     <div class="exam-switcher">
       <div class="exam-switcher-top">
         <span>当前考试空间</span>
-        <button type="button" class="outline-add-btn" id="manageExamsBtn" title="新建或删除考试项目">管理</button>
+        <button type="button" class="outline-add-btn" id="manageExamsBtn" title="新建或设置考试日期">设置/切换</button>
       </div>
       <select id="examSelect"></select>
     </div>
@@ -813,10 +852,10 @@ label input, label textarea, label select { margin-top: 5px; }
     </div>
     <nav id="mainNav" class="side-nav">
       <button class="nav-item active" data-view="home"><span class="nav-ico">⌂</span><span class="nav-txt">今日复习 & 打卡</span><span class="nav-cnt" id="navCntDue">0</span></button>
-      <button class="nav-item" data-view="quiz"><span class="nav-ico">✎</span><span class="nav-txt">真题刷题 & AI解析</span><span class="nav-cnt" id="navCntQuiz">0</span></button>
-      <button class="nav-item" data-view="knowledge"><span class="nav-ico">▤</span><span class="nav-txt">课程学习记录</span><span class="nav-cnt" id="navCntNotes">0</span></button>
+      <button class="nav-item" data-view="quiz"><span class="nav-ico">✎</span><span class="nav-txt">真题刷题 & 错题斩</span><span class="nav-cnt" id="navCntQuiz">0</span></button>
+      <button class="nav-item" data-view="knowledge"><span class="nav-ico">▤</span><span class="nav-txt">课程笔记 & 公式集</span><span class="nav-cnt" id="navCntNotes">0</span></button>
       <button class="nav-item" data-view="mindmap"><span class="nav-ico">❖</span><span class="nav-txt">思维导图</span><span class="nav-cnt" id="navCntMap">0</span></button>
-      <button class="nav-item" data-view="standards"><span class="nav-ico">§</span><span class="nav-txt">规范台账 & 本地PDF</span><span class="nav-cnt" id="navCntStd">0</span></button>
+      <button class="nav-item" data-view="standards"><span class="nav-ico">§</span><span class="nav-txt">规范库 & 云盘/本地PDF</span><span class="nav-cnt" id="navCntStd">0</span></button>
     </nav>
 
     <div class="side-calendar">
@@ -855,6 +894,7 @@ label input, label textarea, label select { margin-top: 5px; }
       <div class="topbar-left">
         <button class="mobile-menu" id="menuBtn">☰</button>
         <div class="crumb-pill"><span id="crumbExamName">注册岩土工程师（基础）</span> · <span id="breadcrumb">今日复习 & 打卡</span></div>
+        <span class="countdown-pill" id="topCountdownBadge" title="点击设置考试日期">设置考试倒计时</span>
       </div>
       <div class="top-actions">
         <span class="today" id="todayText"></span>
@@ -863,13 +903,16 @@ label input, label textarea, label select { margin-top: 5px; }
     </header>
 
     <div class="content" id="content">
-      <!-- 1. 今日复习 & 每日打卡 -->
+      <!-- 1. 冲刺看板 & 今日复习 & 每日打卡 -->
       <section class="view active" id="view-home">
         <div class="feed-header">
           <div class="feed-icon">⌂</div>
           <h1 id="homeTitle">今日备考与艾宾浩斯复习</h1>
           <p class="feed-sub" id="homeSubStats">按遗忘曲线自动排期（1天 → 2天 → 4天 → 7天 → 15天 → 30天）</p>
         </div>
+
+        <!-- 考前冲刺与掌握率看板 -->
+        <div class="sprint-banner" id="sprintBanner"></div>
 
         <div class="quick-create-bar" id="quickLogBar">
           <span>打卡今天学了哪门课、哪一章（支持 Ctrl+V 贴公式截图，自动加入记忆曲线）…</span>
@@ -886,21 +929,38 @@ label input, label textarea, label select { margin-top: 5px; }
         <div id="homeRecentNotes" class="card-feed"></div>
       </section>
 
-      <!-- 2. 真题刷题 & AI 深度复盘 -->
+      <!-- 2. 真题刷题 & 顽固错题池 & 模拟考 -->
       <section class="view" id="view-quiz">
         <div class="feed-header">
           <div class="feed-icon">✎</div>
-          <h1>历年真题刷题与 AI 解析</h1>
-          <p class="feed-sub">做题时专注单栏作答；交卷或复习时自动展开双栏对照解析、导图与规范依据</p>
+          <h1>历年真题刷题、错题斩与全真模拟</h1>
+          <p class="feed-sub">支持专注单栏刷题、顽固错题筛选重做与斩题、考前随机抽题倒计时模拟</p>
+        </div>
+
+        <div id="mockTimerBanner" style="display:none" class="mock-timer-bar">
+          <div>
+            <b>⏱️ 考前全真模拟进行中</b>
+            <span id="mockInfoText" style="font-size:12px;opacity:0.8;margin-left:10px"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="mock-timer-clock" id="mockClockText">60:00</span>
+            <button type="button" class="chip-btn primary-chip" style="background:#fde047;color:#1f2329;border:0" id="btnFinishMock">交卷看分</button>
+            <button type="button" class="chip-btn" id="btnExitMock">退出模拟</button>
+          </div>
         </div>
 
         <div class="toolbar">
           <input id="quizSearch" placeholder="搜索题干、考点或规范条文…">
           <select id="quizCourseFilter"><option value="">全部科目</option></select>
+          <select id="quizPoolFilter">
+            <option value="all">全部题库</option>
+            <option value="wrong_only">🔥 仅看顽固错题池</option>
+          </select>
           <select id="quizModeFilter">
             <option value="practice">沉浸刷题模式（隐藏答案）</option>
-            <option value="review">复盘对照模式（显示AI解析+右栏资料）</option>
+            <option value="review">复盘对照模式（AI解析+右栏资料）</option>
           </select>
+          <button class="btn btn-outline" id="btnStartMock">⏱️ 随机模拟考</button>
           <button class="btn btn-outline" id="btnImportQuiz">⚡ 导入真题包</button>
           <button class="btn btn-primary" id="btnNewQuiz">＋ 录入真题</button>
         </div>
@@ -908,16 +968,17 @@ label input, label textarea, label select { margin-top: 5px; }
         <div id="quizWorkArea"></div>
       </section>
 
-      <!-- 3. 课程学习记录 -->
+      <!-- 3. 课程学习记录 & 公式口袋速查 -->
       <section class="view" id="view-knowledge">
         <div class="feed-header">
           <div class="feed-icon">▤</div>
           <h1 id="selectedCourseTitle">课程学习记录</h1>
-          <p class="feed-sub" id="selectedCourseDesc">按科目与章节沉淀每日学习内容，支持公式图片粘贴</p>
+          <p class="feed-sub" id="selectedCourseDesc">按科目与章节沉淀每日学习内容，支持一键聚合公式口诀速查</p>
         </div>
 
         <div class="toolbar">
           <input id="courseSearch" placeholder="搜索课程、章节或笔记内容…">
+          <button class="btn btn-outline" id="btnFormulaFilter">📐 公式与口诀速查</button>
           <button class="btn btn-outline" id="manageCoursesBtn">管理科目/章节</button>
           <button class="btn btn-primary" id="newNoteBtn">＋ 记录学习内容</button>
         </div>
@@ -944,24 +1005,33 @@ label input, label textarea, label select { margin-top: 5px; }
         <div id="mindmapContainer" class="mindmap-canvas"></div>
       </section>
 
-      <!-- 5. 规范台账 & 本地 PDF 总资料库 -->
+      <!-- 5. 规范台账（含谷歌云盘直达按钮） & 本地 PDF 总资料库 -->
       <section class="view" id="view-standards">
         <div class="feed-header">
           <div class="feed-icon">§</div>
-          <h1>规范版本台账 & 本地 PDF 资料库</h1>
-          <p class="feed-sub">所有大体积 PDF 规范、课件、真题均在本地秒开阅读（不占云端空间）；规范版本更新状态自动云同步</p>
+          <h1>规范云盘链接 & 本地 PDF 总资料库</h1>
+          <p class="feed-sub">手机出门点规范台账的「☁️ 打开云端 PDF」直达 Google Drive 原书；电脑在家可挂载本地文件夹秒开阅读</p>
         </div>
 
         <div class="review-tabs" style="display:flex;gap:8px;margin-bottom:16px">
-          <button class="btn btn-primary" data-std-tab="local">📂 本地 PDF 阅读器（规范/课件/真题）</button>
-          <button class="btn btn-outline" data-std-tab="list">📋 规范版本更新台账（50本规范追踪）</button>
+          <button class="btn btn-primary" data-std-tab="list">📋 规范台账 & 谷歌云盘直达（手机/电脑通用）</button>
+          <button class="btn btn-outline" data-std-tab="local">📂 电脑本地文件夹阅读器（零流量秒开）</button>
         </div>
 
-        <!-- 子面板 A：本地 PDF 文件夹挂载阅读器 -->
-        <div id="stdTabLocal">
+        <!-- 子面板 A：规范台账与谷歌网盘直达 -->
+        <div id="stdTabList">
           <div class="toolbar">
-            <button class="btn btn-primary" id="btnMountFolder">📂 一键挂载电脑总资料文件夹（推荐）</button>
-            <label class="btn btn-outline file-label">＋ 临时打开单个 PDF（手机/单文件可用）<input type="file" id="singlePdfInput" accept=".pdf" multiple hidden></label>
+            <input id="stdSearch" placeholder="搜索规范编号（如 GB 50007）、名称或更新状态…">
+            <button class="btn btn-primary" id="btnAddStd">＋ 添加规范与云盘链接</button>
+          </div>
+          <div id="stdListContainer" class="card-feed"></div>
+        </div>
+
+        <!-- 子面板 B：电脑本地 PDF 文件夹挂载阅读器 -->
+        <div id="stdTabLocal" style="display:none">
+          <div class="toolbar">
+            <button class="btn btn-primary" id="btnMountFolder">📂 一键挂载电脑总资料文件夹</button>
+            <label class="btn btn-outline file-label">＋ 打开单个本地 PDF<input type="file" id="singlePdfInput" accept=".pdf" multiple hidden></label>
             <input id="localFileSearch" placeholder="按规范号、文件名筛选本地 PDF…">
           </div>
           <div class="local-lib-grid">
@@ -973,15 +1043,6 @@ label input, label textarea, label select { margin-top: 5px; }
             </div>
           </div>
         </div>
-
-        <!-- 子面板 B：50本规范版本与更新台账 -->
-        <div id="stdTabList" style="display:none">
-          <div class="toolbar">
-            <input id="stdSearch" placeholder="搜索规范编号（如 GB 50007）、名称或更新状态…">
-            <button class="btn btn-primary" id="btnAddStd">＋ 添加规范条目</button>
-          </div>
-          <div id="stdListContainer" class="card-feed"></div>
-        </div>
       </section>
 
       <!-- 6. 云同步与数据备份 -->
@@ -989,7 +1050,7 @@ label input, label textarea, label select { margin-top: 5px; }
         <div class="feed-header">
           <div class="feed-icon">⚙</div>
           <h1>云端同步与数据管理</h1>
-          <p class="feed-sub">修改任何数据后会自动在后台静默同步到云端，只存储轻量文本与压缩图，省空间</p>
+          <p class="feed-sub">修改任何数据后会自动在后台静默同步到云端，只存储轻量文本、云盘链接与压缩图</p>
         </div>
 
         <article class="sn-card">
@@ -1023,7 +1084,7 @@ label input, label textarea, label select { margin-top: 5px; }
 
         <article class="sn-card">
           <h2>全量本地备份（JSON）</h2>
-          <p class="muted">包含所有考试空间、学习卡片、真题解析、思维导图与规范台账。</p>
+          <p class="muted">包含所有考试空间、学习卡片、真题解析、思维导图与规范云盘链接。</p>
           <div class="button-row">
             <button class="btn btn-primary" id="exportData">导出完整备份 (JSON)</button>
             <label class="btn btn-outline file-label">导入合并备份 (JSON)<input type="file" id="importBackup" accept=".json"></label>
@@ -1045,11 +1106,11 @@ label input, label textarea, label select { margin-top: 5px; }
 
 <script>
 (() => {
-  /* 预设多考试空间模板（用户可随时自由新建、修改、删除） */
   const INITIAL_EXAMS = [
     {
       id: "exam_geotech_basic",
       name: "注册岩土工程师（基础）",
+      target_date: "2027-11-01",
       courses: [
         { name: "高等数学", chapters: ["函数与极限", "微分学", "积分学", "常微分方程", "线性代数", "概率统计"] },
         { name: "普通物理", chapters: ["力学", "热学", "电磁学", "振动与波", "光学"] },
@@ -1068,6 +1129,7 @@ label input, label textarea, label select { margin-top: 5px; }
     {
       id: "exam_geotech_pro",
       name: "注册岩土工程师（专业）",
+      target_date: "",
       courses: [
         { name: "岩土工程勘察", chapters: ["勘察分级与布置", "原位测试", "室内试验", "水文地质勘察"] },
         { name: "浅基础", chapters: ["地基承载力计算", "基础沉降计算", "软弱下卧层验算", "扩展基础与筏基"] },
@@ -1082,6 +1144,7 @@ label input, label textarea, label select { margin-top: 5px; }
     {
       id: "exam_constructor_1",
       name: "一级建造师",
+      target_date: "",
       courses: [
         { name: "建设工程经济", chapters: ["工程经济", "工程财务", "建设工程估价"] },
         { name: "建设工程项目管理", chapters: ["组织与目标控制", "进度与质量管理", "安全与合同管理"] },
@@ -1092,6 +1155,7 @@ label input, label textarea, label select { margin-top: 5px; }
     {
       id: "exam_cost_install",
       name: "一级造价师（安装专业）",
+      target_date: "",
       courses: [
         { name: "建设工程造价管理", chapters: ["工程造价管理制度", "工程项目管理", "工程经济与投融资"] },
         { name: "建设工程计价", chapters: ["工程造价构成", "计价方法与依据", "决策与设计阶段计价", "发承包与施工阶段计价"] },
@@ -1102,6 +1166,7 @@ label input, label textarea, label select { margin-top: 5px; }
     {
       id: "exam_grad",
       name: "研究生入学考试",
+      target_date: "",
       courses: [
         { name: "考研政治", chapters: ["马原", "毛中特与新思想", "史纲", "思修法基"] },
         { name: "考研英语", chapters: ["核心词汇与长难句", "阅读理解", "写作模板"] },
@@ -1112,16 +1177,15 @@ label input, label textarea, label select { margin-top: 5px; }
   ];
 
   const INITIAL_STANDARDS = [
-    { id: "std_1", code: "GB 50007-2011", name: "建筑地基基础设计规范", status: "现行有效", note: "重点：第5章地基计算（承载力深宽修正表5.2.4、变形计算）、第8章基础设计" },
-    { id: "std_2", code: "GB 50021-2001 (2009年版)", name: "岩土工程勘察规范", status: "现行有效", note: "重点：勘察等级划分、原位测试（标贯/静力触探）、特殊性岩土勘察" },
-    { id: "std_3", code: "JGJ 94-2008", name: "建筑桩基技术规范", status: "现行有效", note: "重点：单桩承载力特征值、负摩阻力中性点、群桩沉降、承台受冲切受剪" },
-    { id: "std_4", code: "JGJ 79-2012", name: "建筑地基处理技术规范", status: "现行有效", note: "重点：换填垫层厚度与宽度、复合地基承载力特征值计算（置换率m）" },
-    { id: "std_5", code: "JGJ 120-2012", name: "建筑基坑支护技术规程", status: "现行有效", note: "重点：水土分算与合算、嵌固深度稳定性验算、锚杆与内支撑计算" },
-    { id: "std_6", code: "GB 50330-2013", name: "建筑边坡工程技术规范", status: "现行有效", note: "重点：边坡安全等级、主动土压力修正、锚杆挡墙与滑坡推力计算" },
-    { id: "std_7", code: "GB 50011-2010 (2016年版)", name: "建筑抗震设计规范", status: "现行有效", note: "重点：第4章场地类别划分（等效剪切波速与覆盖层厚度）、液化判别与液化指数" }
+    { id: "std_1", code: "GB 50007-2011", name: "建筑地基基础设计规范", status: "现行有效", cloud_url: "", note: "重点：第5章地基计算（承载力深宽修正表5.2.4、变形计算）、第8章基础设计" },
+    { id: "std_2", code: "GB 50021-2001 (2009年版)", name: "岩土工程勘察规范", status: "现行有效", cloud_url: "", note: "重点：勘察等级划分、原位测试（标贯/静力触探）、特殊性岩土勘察" },
+    { id: "std_3", code: "JGJ 94-2008", name: "建筑桩基技术规范", status: "现行有效", cloud_url: "", note: "重点：单桩承载力特征值、负摩阻力中性点、群桩沉降、承台受冲切受剪" },
+    { id: "std_4", code: "JGJ 79-2012", name: "建筑地基处理技术规范", status: "现行有效", cloud_url: "", note: "重点：换填垫层厚度与宽度、复合地基承载力特征值计算（置换率m）" },
+    { id: "std_5", code: "JGJ 120-2012", name: "建筑基坑支护技术规程", status: "现行有效", cloud_url: "", note: "重点：水土分算与合算、嵌固深度稳定性验算、锚杆与内支撑计算" },
+    { id: "std_6", code: "GB 50330-2013", name: "建筑边坡工程技术规范", status: "现行有效", cloud_url: "", note: "重点：边坡安全等级、主动土压力修正、锚杆挡墙与滑坡推力计算" },
+    { id: "std_7", code: "GB 50011-2010 (2016年版)", name: "建筑抗震设计规范", status: "现行有效", cloud_url: "", note: "重点：第4章场地类别划分（等效剪切波速与覆盖层厚度）、液化判别与液化指数" }
   ];
 
-  /* 艾宾浩斯遗忘曲线标准间隔（天） */
   const EBBINGHAUS_STEPS = [1, 2, 4, 7, 15, 30];
 
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -1137,13 +1201,15 @@ label input, label textarea, label select { margin-top: 5px; }
     updated_at: new Date().toISOString()
   });
 
-  let data = defaultData(), selectedCourse = "全部", sbClient = null, currentUser = null, hadLocalData = false;
+  let data = defaultData(), selectedCourse = "全部", formulaOnly = false, sbClient = null, currentUser = null, hadLocalData = false;
   let calDate = new Date(), tempImages = [], autoSyncTimer = null;
-  let localPdfFiles = []; // 存储本地挂载的 PDF File 对象（不入云）
-  let userQuizAnswers = {}; // 当前刷题会话的临时作答记录
+  let localPdfFiles = [];
+  let userQuizAnswers = {};
   let activeMindmapId = null;
 
-  /* IndexedDB 本地持久化 */
+  /* 模拟考状态 */
+  let mockState = { active: false, ids: [], endTime: 0, timerHandle: null };
+
   const IDB_NAME = "geotech-study-db", IDB_STORE = "appdata";
   function idbOpen() {
     return new Promise((resolve, reject) => {
@@ -1178,7 +1244,6 @@ label input, label textarea, label select { margin-top: 5px; }
     } catch (e) { console.warn("IndexedDB save failed", e); }
   }
 
-  /* 压缩图片（控制体积，确保云端同步轻量高速） */
   function compressImage(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1225,7 +1290,6 @@ label input, label textarea, label select { margin-top: 5px; }
   }
   function currentCourses() { return currentExam()?.courses || []; }
 
-  /* 保存本地并触发静默后台云同步（防抖 1.5 秒） */
   function saveLocal(silentSync = true) {
     data.updated_at = new Date().toISOString();
     hadLocalData = true;
@@ -1248,7 +1312,6 @@ label input, label textarea, label select { margin-top: 5px; }
       }
       if (v) {
         data = { ...defaultData(), ...v };
-        // 兼容旧版本历史笔记自动归入当前考试空间
         if (Array.isArray(data.notes)) {
           data.notes.forEach(n => { if (!n.exam_id) n.exam_id = data.active_exam_id; });
         }
@@ -1264,6 +1327,7 @@ label input, label textarea, label select { margin-top: 5px; }
             answer: "",
             ai_analysis: `【错误原因】${m.reason || ""}\n【正确思路】${m.solution || ""}`,
             std_ref: "",
+            wrong_count: 1,
             images: m.images || [],
             created_at: m.created_at || today()
           }));
@@ -1280,7 +1344,7 @@ label input, label textarea, label select { margin-top: 5px; }
     $$(".view").forEach(x => x.classList.toggle("active", x.id === "view-" + v));
     $$(".nav-item").forEach(x => x.classList.toggle("active", x.dataset.view === v));
     $$(".rail-btn").forEach(x => x.classList.toggle("active", x.dataset.view === v));
-    $("#breadcrumb").textContent = ({ home: "今日复习 & 打卡", quiz: "真题刷题 & AI解析", knowledge: "课程学习记录", mindmap: "思维导图", standards: "规范台账 & 本地PDF", settings: "云端同步与设置" })[v] || v;
+    $("#breadcrumb").textContent = ({ home: "今日复习 & 打卡", quiz: "真题刷题 & 错题斩", knowledge: "课程笔记 & 公式集", mindmap: "思维导图", standards: "规范库 & 云盘/本地PDF", settings: "云端同步与设置" })[v] || v;
     $("#sidebar").classList.remove("open");
     updateContentWidth();
     if (v === "quiz") renderQuiz();
@@ -1308,10 +1372,22 @@ label input, label textarea, label select { margin-top: 5px; }
     updateContentWidth();
   }
 
+  function getDaysLeft(dateStr) {
+    if (!dateStr) return null;
+    let diff = Math.ceil((new Date(dateStr).setHours(0,0,0,0) - new Date().setHours(0,0,0,0)) / 86400000);
+    return diff;
+  }
+
   function renderExamSelector() {
     let ex = currentExam();
     $("#examSelect").innerHTML = data.exams.map(e => `<option value="${esc(e.id)}" ${e.id === ex.id ? "selected" : ""}>${esc(e.name)}</option>`).join("");
     $("#crumbExamName").textContent = ex.name;
+    let days = getDaysLeft(ex.target_date);
+    if (days !== null) {
+      $("#topCountdownBadge").textContent = days >= 0 ? `距考试 ${days} 天` : `已过考试日 ${Math.abs(days)} 天`;
+    } else {
+      $("#topCountdownBadge").textContent = "点击设置考试日期";
+    }
   }
 
   function examNotes() { return (data.notes || []).filter(x => (x.exam_id || data.active_exam_id) === data.active_exam_id); }
@@ -1364,11 +1440,41 @@ label input, label textarea, label select { margin-top: 5px; }
     return `<div class="card-images">${imgs.map(src => `<img src="${src}" alt="公式图表" data-zoom-img="${src}">`).join("")}</div>`;
   }
 
-  /* 1. 首页：艾宾浩斯到期复习（双栏复盘） + 每日学习打卡 */
+  /* 1. 首页：冲刺进度看板 + 艾宾浩斯到期复习 + 每日学习打卡 */
   function renderHome() {
-    let due = examReviews().filter(x => x.next_date <= today());
+    let ex = currentExam();
+    let notes = examNotes();
+    let revs = examReviews();
+    let due = revs.filter(x => x.next_date <= today());
+    let wrongPoolCnt = examQuizzes().filter(q => (q.wrong_count || 0) > 0).length;
+    let masteredCnt = revs.filter(r => (r.step || 0) >= 2).length;
+    let masterRate = revs.length ? Math.round((masteredCnt / revs.length) * 100) : 0;
+    let days = getDaysLeft(ex.target_date);
+
+    $("#sprintBanner").innerHTML = `
+      <div class="sprint-card" style="cursor:pointer" id="bannerCountdownCard">
+        <span>目标考试倒计时</span>
+        <strong>${days !== null ? (days >= 0 ? days + " 天" : "已结束") : "未设定"}</strong>
+        <small>${ex.target_date ? "考试日：" + ex.target_date : "点击设置考试日期"}</small>
+      </div>
+      <div class="sprint-card">
+        <span>卡片掌握率（≥2轮复习）</span>
+        <strong>${masterRate}%</strong>
+        <div class="progress-mini-bar"><div class="progress-mini-fill" style="width:${masterRate}%"></div></div>
+      </div>
+      <div class="sprint-card" style="cursor:pointer" data-jump-wrong-pool="1">
+        <span>顽固错题池待斩</span>
+        <strong>${wrongPoolCnt} 题</strong>
+        <small>点击进入错题专练 →</small>
+      </div>
+      <div class="sprint-card">
+        <span>累计知识点沉淀</span>
+        <strong>${notes.length} 条</strong>
+        <small>今日待复习 ${due.length} 项</small>
+      </div>`;
+
     $("#dueSectionLabel").textContent = `今日到期需复习（${due.length} 项）`;
-    $("#homeSubStats").textContent = `当前空间：${currentExam().name} · 艾宾浩斯周期 [1 / 2 / 4 / 7 / 15 / 30 天]`;
+    $("#homeSubStats").textContent = `当前空间：${ex.name} · 艾宾浩斯周期 [1 / 2 / 4 / 7 / 15 / 30 天]`;
 
     if (due.length) {
       let cur = due[0];
@@ -1397,7 +1503,7 @@ label input, label textarea, label select { margin-top: 5px; }
             <div class="sn-card-head">
               <div>
                 <h3>关联资料与规范对照</h3>
-                <div class="sn-parent">复习时直接在此核对关联讲义或本地规范</div>
+                <div class="sn-parent">复习时直接在此核对关联讲义或规范条文</div>
               </div>
             </div>
             ${cur.std_ref ? `<div class="notice"><b>规范定位：</b>${esc(cur.std_ref)}</div>` : ""}
@@ -1406,10 +1512,10 @@ label input, label textarea, label select { margin-top: 5px; }
           </aside>
         </div>`;
     } else {
-      $("#homeDueContainer").innerHTML = `<div class="empty">🎉 今天在「${esc(currentExam().name)}」空间下的到期复习已全部清空！点击上方「＋ 记录今日所学」打卡新内容吧。</div>`;
+      $("#homeDueContainer").innerHTML = `<div class="empty">🎉 今天在「${esc(ex.name)}」空间下的到期复习已全部清空！点击上方「＋ 记录今日所学」打卡新内容吧。</div>`;
     }
 
-    let recent = examNotes().slice(0, 5);
+    let recent = notes.slice(0, 5);
     $("#homeRecentNotes").innerHTML = recent.length ? recent.map(n => `
       <article class="sn-card">
         <div class="sn-card-head">
@@ -1424,29 +1530,40 @@ label input, label textarea, label select { margin-top: 5px; }
       </article>`).join("") : `<div class="empty">还没有学习打卡记录。点击上方「＋ 记录今日所学」开始记录。</div>`;
   }
 
-  /* 2. 真题刷题 & AI 深度解析（单栏做题 vs 双栏复盘） */
+  /* 2. 真题刷题 & 顽固错题池 & 随机模拟考 */
   function renderQuiz() {
     let courses = currentCourses();
     let fCourse = $("#quizCourseFilter")?.value || "";
     $("#quizCourseFilter").innerHTML = `<option value="">全部科目</option>` + courses.map(c => `<option value="${esc(c.name)}" ${fCourse === c.name ? "selected" : ""}>${esc(c.name)}</option>`).join("");
 
     let q = ($("#quizSearch")?.value || "").toLowerCase();
+    let pool = $("#quizPoolFilter")?.value || "all";
     let mode = $("#quizModeFilter")?.value || "practice";
     updateContentWidth();
 
-    let list = examQuizzes().filter(item => (!fCourse || item.course === fCourse) && (!q || [item.title, item.question, item.ai_analysis, item.std_ref].join(" ").toLowerCase().includes(q)));
+    let list = examQuizzes();
+    if (mockState.active) {
+      list = mockState.ids.map(id => list.find(x => x.id === id)).filter(Boolean);
+    } else {
+      list = list.filter(item => {
+        if (pool === "wrong_only" && !(item.wrong_count > 0)) return false;
+        if (fCourse && item.course !== fCourse) return false;
+        if (q && ![item.title, item.question, item.ai_analysis, item.std_ref].join(" ").toLowerCase().includes(q)) return false;
+        return true;
+      });
+    }
 
     if (!list.length) {
-      $("#quizWorkArea").innerHTML = `<div class="empty">当前考试空间暂无真题。点击「⚡ 导入真题包」批量导入带 AI 深度解析的历年真题，或点「＋ 录入真题」。</div>`;
+      $("#quizWorkArea").innerHTML = `<div class="empty">${pool === "wrong_only" ? "🎉 太棒了，当前顽固错题池已清空！" : "当前考试空间暂无真题。点击「⚡ 导入真题包」批量导入带 AI 深度解析的历年真题，或点「＋ 录入真题」。"}</div>`;
       return;
     }
 
     if (mode === "practice") {
-      // 沉浸式单栏刷题模式（干净无干扰）
       $("#quizWorkArea").innerHTML = `
         <div class="card-feed">
           ${list.map((item, idx) => {
             let userAns = userQuizAnswers[item.id];
+            let errCnt = item.wrong_count || 0;
             let optsHtml = Array.isArray(item.options) && item.options.length ? `
               <div class="quiz-options">
                 ${item.options.map(opt => {
@@ -1467,53 +1584,63 @@ label input, label textarea, label select { margin-top: 5px; }
                     <div class="sn-parent">✎ ${esc(item.course)} · ${esc(item.chapter || "")}</div>
                   </div>
                   <div class="sn-tags">
+                    ${errCnt > 0 ? `<span class="sn-badge err-badge">做错 ${errCnt} 次</span>` : ""}
+                    ${errCnt > 0 ? `<button class="chip-btn slay-chip" data-slay-quiz="${item.id}" title="彻底掌握，移出错题池">⚔️ 斩掉错题</button>` : ""}
+                    ${userAns ? `<button class="chip-btn" data-redo-quiz="${item.id}">重做此题</button>` : ""}
                     <button class="chip-btn" data-switch-review-quiz="${item.id}">看AI解析与双栏对照 →</button>
                   </div>
                 </div>
                 <div class="sn-card-body">${esc(item.question || "")}</div>
                 ${renderImagesHtml(item.images)}
                 ${optsHtml}
-                ${userAns ? `<div class="notice" style="margin-top:12px">你的选择：<b>${esc(userAns)}</b> · 标准答案：<b>${esc(item.answer || "见解析")}</b>（已自动将错题纳入艾宾浩斯复习曲线）</div>` : ""}
+                ${userAns ? `<div class="notice" style="margin-top:12px">你的选择：<b>${esc(userAns)}</b> · 标准答案：<b>${esc(item.answer || "见解析")}</b></div>` : ""}
               </article>`;
           }).join("")}
         </div>`;
     } else {
-      // 复盘对照模式：左栏题目+AI深度解析，右栏规范依据+本地PDF直达
       $("#quizWorkArea").innerHTML = `
         <div class="dual-pane">
           <div class="card-feed">
-            ${list.map((item, idx) => `
-              <article class="sn-card highlight-card">
-                <div class="sn-card-head">
-                  <div>
-                    <h3>${idx + 1}. ${esc(item.title)}</h3>
-                    <div class="sn-parent">✎ ${esc(item.course)} · ${esc(item.chapter || "")} · 答案：<b>${esc(item.answer || "见解析")}</b></div>
+            ${list.map((item, idx) => {
+              let errCnt = item.wrong_count || 0;
+              return `
+                <article class="sn-card highlight-card">
+                  <div class="sn-card-head">
+                    <div>
+                      <h3>${idx + 1}. ${esc(item.title)}</h3>
+                      <div class="sn-parent">✎ ${esc(item.course)} · ${esc(item.chapter || "")} · 答案：<b>${esc(item.answer || "见解析")}</b></div>
+                    </div>
+                    <div class="sn-tags">
+                      ${errCnt > 0 ? `<span class="sn-badge err-badge">错 ${errCnt} 次</span>` : ""}
+                      ${errCnt > 0 ? `<button class="chip-btn slay-chip" data-slay-quiz="${item.id}">⚔️ 斩题</button>` : ""}
+                      <button class="chip-btn" data-edit-quiz="${item.id}">编辑</button>
+                      <button class="chip-btn" data-add-quiz-review="${item.id}">加入复习</button>
+                      <button class="chip-btn" data-del-quiz="${item.id}">删除</button>
+                    </div>
                   </div>
-                  <div class="sn-tags">
-                    <button class="chip-btn" data-edit-quiz="${item.id}">编辑</button>
-                    <button class="chip-btn" data-add-quiz-review="${item.id}">加入复习</button>
-                    <button class="chip-btn" data-del-quiz="${item.id}">删除</button>
-                  </div>
-                </div>
-                <div class="sn-card-body">${esc(item.question || "")}</div>
-                ${Array.isArray(item.options) && item.options.length ? `<div class="sn-card-body" style="margin-top:8px;color:#646a73">${esc(item.options.join("\n"))}</div>` : ""}
-                ${renderImagesHtml(item.images)}
-                ${item.std_ref ? `<div class="notice"><b>📜 规范定位：</b>${esc(item.std_ref)}</div>` : ""}
-                <div class="ai-box"><b>✨ AI 全面深度解析：</b>\n${esc(item.ai_analysis || "暂无解析，点击右上角「编辑」补充。")}</div>
-              </article>`).join("")}
+                  <div class="sn-card-body">${esc(item.question || "")}</div>
+                  ${Array.isArray(item.options) && item.options.length ? `<div class="sn-card-body" style="margin-top:8px;color:#646a73">${esc(item.options.join("\n"))}</div>` : ""}
+                  ${renderImagesHtml(item.images)}
+                  ${item.std_ref ? `<div class="notice"><b>📜 规范定位：</b>${esc(item.std_ref)}</div>` : ""}
+                  <div class="ai-box"><b>✨ AI 全面深度解析：</b>\n${esc(item.ai_analysis || "暂无解析，点击右上角「编辑」补充。")}</div>
+                </article>`;
+            }).join("")}
           </div>
           <aside class="pane-sticky">
             <div class="sn-card-head">
               <div>
-                <h3>右侧资料与规范速查台</h3>
-                <div class="sn-parent">复盘时随时对照规范台账或挂载的本地规范 PDF</div>
+                <h3>右侧规范云盘直达 & 速查台</h3>
+                <div class="sn-parent">复盘时直接点击打开 Google Drive 原版规范或本地 PDF</div>
               </div>
-              <button class="chip-btn" data-view="standards">打开本地PDF库 →</button>
+              <button class="chip-btn" data-view="standards">规范库 →</button>
             </div>
-            <div class="section-divider" style="margin-top:8px"><span>核心规范索引</span></div>
-            ${(data.standards || []).slice(0, 8).map(s => `
+            <div class="section-divider" style="margin-top:8px"><span>核心规范速查</span></div>
+            ${(data.standards || []).slice(0, 10).map(s => `
               <div class="manage-row" style="flex-direction:column;align-items:flex-start;gap:4px">
-                <div><b>${esc(s.code)}</b> · ${esc(s.name)}</div>
+                <div style="width:100%;display:flex;justify-content:space-between;align-items:center">
+                  <b>${esc(s.code)} · ${esc(s.name)}</b>
+                  ${s.cloud_url ? `<a href="${esc(s.cloud_url)}" target="_blank" rel="noopener" class="chip-btn drive-chip">☁️ 云盘原书</a>` : ""}
+                </div>
                 <small style="color:#646a73;font-size:11px">${esc(s.note || "")}</small>
               </div>`).join("")}
           </aside>
@@ -1521,20 +1648,34 @@ label input, label textarea, label select { margin-top: 5px; }
     }
   }
 
-  /* 3. 课程学习记录 */
+  /* 3. 课程学习记录 & 公式速查 */
   function renderKnowledge() {
     let courses = currentCourses();
     let notes = examNotes();
     let q = ($("#courseSearch")?.value || "").toLowerCase();
+
+    $("#btnFormulaFilter").classList.toggle("btn-active-pill", formulaOnly);
+    $("#btnFormulaFilter").textContent = formulaOnly ? "📐 正在显示：公式与口诀速查（点击退出）" : "📐 公式与口诀速查";
+
     $("#courseTree").innerHTML = `<button class="course-pill ${selectedCourse === "全部" ? "active" : ""}" data-course="全部">全部 (${notes.length})</button>` +
       courses.map(c => {
         let cnt = notes.filter(n => n.course === c.name).length;
         return `<button class="course-pill ${selectedCourse === c.name ? "active" : ""}" data-course="${esc(c.name)}">${esc(c.name)}${cnt ? ` (${cnt})` : ""}</button>`;
       }).join("");
 
-    let filtered = notes.filter(n => (selectedCourse === "全部" || n.course === selectedCourse) && (!q || [n.title, n.content, n.chapter, n.course].join(" ").toLowerCase().includes(q)));
-    $("#selectedCourseTitle").textContent = selectedCourse === "全部" ? `${currentExam().name} · 课程记录` : selectedCourse;
-    $("#selectedCourseDesc").textContent = `共 ${filtered.length} 条学习记录`;
+    let filtered = notes.filter(n => {
+      if (selectedCourse !== "全部" && n.course !== selectedCourse) return false;
+      if (formulaOnly) {
+        let textAll = [n.title, n.content, ...(n.tags || [])].join(" ");
+        let isFormula = /公式|口诀|计算|表达式|定律|准则|=|τ|σ|φ|γ/.test(textAll);
+        if (!isFormula) return false;
+      }
+      if (q && ![n.title, n.content, n.chapter, n.course].join(" ").toLowerCase().includes(q)) return false;
+      return true;
+    });
+
+    $("#selectedCourseTitle").textContent = formulaOnly ? `${currentExam().name} · 公式与口诀口袋速查` : (selectedCourse === "全部" ? `${currentExam().name} · 课程记录` : selectedCourse);
+    $("#selectedCourseDesc").textContent = `共 ${filtered.length} 条${formulaOnly ? "公式/口诀卡片" : "学习记录"}`;
 
     $("#notesList").innerHTML = filtered.length ? filtered.map(n => `
       <article class="sn-card">
@@ -1555,7 +1696,7 @@ label input, label textarea, label select { margin-top: 5px; }
             <button class="chip-btn" data-delete-note="${n.id}">删除</button>
           </div>
         </div>
-      </article>`).join("") : `<div class="empty">该科目下还没有学习记录。点击右上角「＋ 记录学习内容」开始沉淀。</div>`;
+      </article>`).join("") : `<div class="empty">${formulaOnly ? "暂无符合公式/口诀特征的卡片。新建卡片时加上「核心公式」标签即可自动出现在这里。" : "该科目下还没有学习记录。点击右上角「＋ 记录学习内容」开始沉淀。"}</div>`;
   }
 
   /* 4. 交互式思维导图 */
@@ -1597,7 +1738,7 @@ label input, label textarea, label select { margin-top: 5px; }
     return cur;
   }
 
-  /* 5. 规范台账 & 本地 PDF 阅读器 */
+  /* 5. 规范台账（含 Google Drive 直达按钮） & 本地 PDF 阅读器 */
   function renderStandardsView() {
     let qLocal = ($("#localFileSearch")?.value || "").toLowerCase();
     let filteredFiles = localPdfFiles.filter(f => !qLocal || f.name.toLowerCase().includes(qLocal));
@@ -1619,15 +1760,16 @@ label input, label textarea, label select { margin-top: 5px; }
             </div>
             <div class="sn-tags">
               <span class="sn-badge ${badgeCls}">${esc(s.status || "现行有效")}</span>
-              <button class="chip-btn" data-edit-std="${s.id}">编辑/更新版本</button>
+              ${s.cloud_url ? `<a href="${esc(s.cloud_url)}" target="_blank" rel="noopener" class="chip-btn drive-chip">☁️ 打开云端 PDF</a>` : ""}
+              <button class="chip-btn" data-edit-std="${s.id}">编辑/绑网盘链接</button>
               <button class="chip-btn" data-del-std="${s.id}">删除</button>
             </div>
           </div>
         </article>`;
-    }).join("") : `<div class="empty">未找到匹配规范，点击右上角「＋ 添加规范条目」录入。</div>`;
+    }).join("") : `<div class="empty">未找到匹配规范，点击右上角「＋ 添加规范与云盘链接」录入。</div>`;
   }
 
-  /* 艾宾浩斯自动入队与评分 */
+  /* 艾宾浩斯入队与评分 */
   function enqueueEbbinghaus(item) {
     if (data.reviews.some(r => r.ref_id === item.id)) return;
     data.reviews.unshift({
@@ -1662,7 +1804,70 @@ label input, label textarea, label select { margin-top: 5px; }
     toast(`已按遗忘曲线排期，下次复习：${r.next_date}`);
   }
 
-  /* 弹窗工具 */
+  /* 全真模拟考控制 */
+  function startMockExamModal() {
+    let totalAvailable = examQuizzes().length;
+    if (!totalAvailable) { toast("当前考试空间还没有录入真题，请先导入真题包"); return; }
+    openModal("⏱️ 开启考前随机模拟计时测试", `
+      <form>
+        <div class="notice">当前题库共有 <b>${totalAvailable}</b> 道真题。系统将随机抽取题目并开启倒计时，交卷后自动判分并把错题送入错题池与遗忘曲线。</div>
+        <div class="form-grid">
+          <label>抽取题数<input name="count" type="number" min="1" max="${totalAvailable}" value="${Math.min(20, totalAvailable)}"></label>
+          <label>考试限时（分钟）<input name="minutes" type="number" min="1" max="240" value="40"></label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
+          <button class="btn btn-primary">立即开始计时</button>
+        </div>
+      </form>`, f => {
+      let cnt = Math.min(totalAvailable, Math.max(1, Number(f.get("count"))));
+      let mins = Math.max(1, Number(f.get("minutes")));
+      let pool = [...examQuizzes()].sort(() => Math.random() - 0.5).slice(0, cnt);
+      userQuizAnswers = {};
+      mockState.active = true;
+      mockState.ids = pool.map(x => x.id);
+      mockState.endTime = Date.now() + mins * 60000;
+      $("#quizModeFilter").value = "practice";
+      $("#mockTimerBanner").style.display = "flex";
+      $("#mockInfoText").textContent = `共 ${cnt} 题 · 限时 ${mins} 分钟`;
+      clearInterval(mockState.timerHandle);
+      mockState.timerHandle = setInterval(() => {
+        let left = Math.max(0, Math.floor((mockState.endTime - Date.now()) / 1000));
+        let mm = String(Math.floor(left / 60)).padStart(2, "0");
+        let ss = String(left % 60).padStart(2, "0");
+        $("#mockClockText").textContent = `${mm}:${ss}`;
+        if (left <= 0) finishMockExam();
+      }, 1000);
+      closeModal();
+      renderQuiz();
+      toast("模拟考已开始，请专注作答！");
+    });
+  }
+
+  function finishMockExam() {
+    clearInterval(mockState.timerHandle);
+    let total = mockState.ids.length;
+    let right = 0;
+    mockState.ids.forEach(id => {
+      let qObj = data.quizzes.find(x => x.id === id);
+      if (!qObj) return;
+      let ans = userQuizAnswers[id];
+      if (ans && ans === (qObj.answer || "").trim().toUpperCase()) {
+        right++;
+      } else {
+        qObj.wrong_count = (qObj.wrong_count || 0) + 1;
+        enqueueEbbinghaus(qObj);
+      }
+    });
+    mockState.active = false;
+    $("#mockTimerBanner").style.display = "none";
+    $("#quizModeFilter").value = "review";
+    saveLocal();
+    let scorePct = total ? Math.round((right / total) * 100) : 0;
+    alert(`模拟考交卷完成！\n\n总题数：${total} 题\n答对：${right} 题\n得分率：${scorePct}%\n\n所有错题及未作答题目已自动加入「顽固错题池」与「艾宾浩斯复习曲线」，现在已为你切换至双栏 AI 复盘模式！`);
+  }
+
+  /* 弹窗与辅助函数 */
   function openModal(title, html, submit) {
     $("#modalTitle").textContent = title;
     $("#modalBody").innerHTML = html;
@@ -1727,7 +1932,6 @@ label input, label textarea, label select { margin-top: 5px; }
     }
   });
 
-  /* 每日学习打卡 / 编辑笔记表单 */
   function noteForm(n = {}) {
     let courses = currentCourses();
     let defaultC = n.course || (selectedCourse !== "全部" ? selectedCourse : courses[0]?.name) || "";
@@ -1741,7 +1945,7 @@ label input, label textarea, label select { margin-top: 5px; }
         <label>核心考点 / 今日学习主题<input name="title" required value="${esc(n.title || "")}" placeholder="例如：第4讲 土的抗剪强度与太沙基承载力"></label>
         <label>学习总结与易错点<textarea name="content" rows="4" placeholder="记录核心结论、适用条件、规范条文号…">${esc(n.content || "")}</textarea></label>
         ${imageWidgetHtml()}
-        <label>标签（逗号分隔）<input name="tags" value="${esc((n.tags || []).join(", "))}" placeholder="打卡, 核心公式"></label>
+        <label>标签（逗号分隔，填「核心公式」可自动汇总到公式速查集）<input name="tags" value="${esc((n.tags || []).join(", "))}" placeholder="核心公式, 高频考点"></label>
         <div class="form-actions">
           <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
           <button class="btn btn-primary">保存并加入遗忘曲线</button>
@@ -1768,7 +1972,6 @@ label input, label textarea, label select { margin-top: 5px; }
     bindImageEvents();
   }
 
-  /* 录入/编辑真题表单 */
   function quizForm(q = {}) {
     let defaultC = q.course || currentCourses()[0]?.name || "";
     tempImages = Array.isArray(q.images) ? [...q.images] : [];
@@ -1808,6 +2011,7 @@ label input, label textarea, label select { margin-top: 5px; }
         answer: v.answer.trim(),
         std_ref: v.std_ref.trim(),
         ai_analysis: v.ai_analysis,
+        wrong_count: q.wrong_count || 0,
         images: [...tempImages],
         created_at: q.created_at || today()
       };
@@ -1820,34 +2024,63 @@ label input, label textarea, label select { margin-top: 5px; }
     bindImageEvents();
   }
 
-  /* 自由管理考试空间（新建 / 归档删除） */
   function manageExamsModal() {
+    let cur = currentExam();
     let listHtml = data.exams.map(ex => `
       <div class="manage-row">
-        <div><b>${esc(ex.name)}</b> <small style="color:#8f959e">（含 ${ex.courses.length} 门科目）</small></div>
+        <div>
+          <b>${esc(ex.name)}</b>
+          <div style="font-size:11px;color:#8f959e">考试日期：${esc(ex.target_date || "未设定")} · ${ex.courses.length} 门科目</div>
+        </div>
         <div class="sn-tags">
           <button type="button" class="chip-btn" data-switch-exam-now="${esc(ex.id)}">切换</button>
           <button type="button" class="chip-btn" data-del-exam="${esc(ex.id)}">删除</button>
         </div>
       </div>`).join("");
-    openModal("自由管理考试空间（全周期切换）", `
-      <form>
-        <label>新建考试项目名称<input name="name" required placeholder="例如：2027 岩土专业考试 / 一建市政 / 考研复试"></label>
-        <label>初始科目列表（逗号分隔）<input name="courses" placeholder="专业知识, 专业案例, 规范专项"></label>
-        <div class="form-actions" style="margin-bottom:16px">
-          <button type="submit" class="btn btn-primary">＋ 创建新考试空间</button>
+
+    openModal("考试空间与倒计时设置", `
+      <form id="curExamDateForm" style="padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:14px">
+        <div class="form-grid">
+          <label>当前空间「${esc(cur.name)}」目标考试日
+            <input type="date" name="target_date" value="${esc(cur.target_date || "")}">
+          </label>
+          <div style="display:flex;align-items:flex-end;padding-bottom:10px">
+            <button type="submit" class="btn btn-primary" style="width:100%">保存当前考试日期</button>
+          </div>
         </div>
       </form>
-      <div class="section-divider"><span>已有考试空间</span></div>
+      <form id="newExamForm">
+        <label>新建考试项目名称<input name="name" required placeholder="例如：2027 岩土专业考试 / 一建市政 / 考研"></label>
+        <div class="form-grid">
+          <label>初始科目列表（逗号分隔）<input name="courses" placeholder="专业知识, 专业案例, 规范专项"></label>
+          <label>目标考试日期（可选）<input type="date" name="new_target_date"></label>
+        </div>
+        <div class="form-actions" style="margin-bottom:16px">
+          <button type="submit" class="btn btn-outline">＋ 创建新考试空间</button>
+        </div>
+      </form>
+      <div class="section-divider"><span>所有考试空间</span></div>
       <div>${listHtml}</div>
-    `, f => {
-      let name = f.get("name").trim();
+    `, null);
+
+    $("#curExamDateForm").onsubmit = e => {
+      e.preventDefault();
+      cur.target_date = new FormData(e.target).get("target_date");
+      saveLocal();
+      toast("考试倒计时已更新");
+      manageExamsModal();
+    };
+    $("#newExamForm").onsubmit = e => {
+      e.preventDefault();
+      let fd = new FormData(e.target);
+      let name = fd.get("name").trim();
       if (!name) return;
-      let cNames = f.get("courses").split(/[,，]/).map(x => x.trim()).filter(Boolean);
+      let cNames = fd.get("courses").split(/[,，]/).map(x => x.trim()).filter(Boolean);
       if (!cNames.length) cNames = ["核心科目一", "核心科目二"];
       let newEx = {
         id: "exam_" + uid().slice(0, 8),
         name,
+        target_date: fd.get("new_target_date") || "",
         courses: cNames.map(cn => ({ name: cn, chapters: ["第一章", "第二章", "真题专题"] }))
       };
       data.exams.push(newEx);
@@ -1856,10 +2089,9 @@ label input, label textarea, label select { margin-top: 5px; }
       saveLocal();
       toast(`已创建并切换到：${name}`);
       manageExamsModal();
-    });
+    };
   }
 
-  /* 自由管理当前考试的科目与章节 */
   function manageCoursesModal() {
     let ex = currentExam();
     let listHtml = ex.courses.map((c, idx) => `
@@ -1893,7 +2125,6 @@ label input, label textarea, label select { margin-top: 5px; }
     });
   }
 
-  /* 统一导入 AI 整理包（支持同时导入 notes / quizzes / mindmaps / standards） */
   function importAiPackModal() {
     openModal("⚡ 导入 AI 整理数据包（笔记 / 真题解析 / 思维导图）", `
       <form>
@@ -1920,7 +2151,7 @@ label input, label textarea, label select { margin-top: 5px; }
         }
         if (Array.isArray(obj.quizzes)) {
           obj.quizzes.forEach(q => {
-            data.quizzes.unshift({ id: uid(), exam_id: data.active_exam_id, course: q.course || currentCourses()[0]?.name || "通用", chapter: q.chapter || "真题", title: q.title || "真题", question: q.question || "", options: q.options || [], answer: q.answer || "", std_ref: q.std_ref || "", ai_analysis: q.ai_analysis || "", images: [], created_at: today() });
+            data.quizzes.unshift({ id: uid(), exam_id: data.active_exam_id, course: q.course || currentCourses()[0]?.name || "通用", chapter: q.chapter || "真题", title: q.title || "真题", question: q.question || "", options: q.options || [], answer: q.answer || "", std_ref: q.std_ref || "", ai_analysis: q.ai_analysis || "", wrong_count: 0, images: [], created_at: today() });
           });
           counts.push(`${obj.quizzes.length} 道真题`);
         }
@@ -1940,9 +2171,8 @@ label input, label textarea, label select { margin-top: 5px; }
     });
   }
 
-  /* 规范台账新增/编辑 */
   function stdForm(s = {}) {
-    openModal(s.id ? "编辑规范版本信息" : "添加规范条目", `
+    openModal(s.id ? "编辑规范版本与云盘直达链接" : "添加规范条目与云盘链接", `
       <form>
         <div class="form-grid">
           <label>规范编号<input name="code" required value="${esc(s.code || "")}" placeholder="例如：GB 50007-2011"></label>
@@ -1953,6 +2183,9 @@ label input, label textarea, label select { margin-top: 5px; }
           </select></label>
         </div>
         <label>规范全称<input name="name" required value="${esc(s.name || "")}" placeholder="例如：建筑地基基础设计规范"></label>
+        <label>☁️ Google Drive / 云盘 PDF 分享链接（填好后手机和电脑点一下直接打开原书）
+          <input name="cloud_url" type="url" value="${esc(s.cloud_url || "")}" placeholder="https://drive.google.com/file/d/...">
+        </label>
         <label>高频考点与新旧版变化备注<textarea name="note" rows="3" placeholder="记录常考章节、页码及版本修订要点…">${esc(s.note || "")}</textarea></label>
         <div class="form-actions">
           <button type="button" class="btn btn-outline" id="cancelModal">取消</button>
@@ -1969,7 +2202,6 @@ label input, label textarea, label select { margin-top: 5px; }
     });
   }
 
-  /* 递归读取本地挂载文件夹中的所有 PDF */
   async function scanDirHandle(dirHandle, list) {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === "file" && entry.name.toLowerCase().endsWith(".pdf")) {
@@ -2056,7 +2288,7 @@ label input, label textarea, label select { margin-top: 5px; }
     if (!isSilent) toast("云端同步完成");
   }
 
-  /* 全局点击事件委托 */
+  /* 全局事件委托 */
   document.addEventListener("click", e => {
     let zoomImg = e.target.closest("[data-zoom-img]")?.dataset.zoomImg;
     if (zoomImg) { $("#lightboxImg").src = zoomImg; $("#lightbox").classList.add("show"); return; }
@@ -2064,6 +2296,13 @@ label input, label textarea, label select { margin-top: 5px; }
 
     let rmImg = e.target.closest("[data-rm-temp-img]");
     if (rmImg) { tempImages.splice(Number(rmImg.dataset.rmTempImg), 1); refreshImgPreviews(); return; }
+
+    if (e.target.id === "topCountdownBadge" || e.target.closest("#bannerCountdownCard")) { manageExamsModal(); return; }
+    if (e.target.closest("[data-jump-wrong-pool]")) {
+      $("#quizPoolFilter").value = "wrong_only";
+      switchView("quiz");
+      return;
+    }
 
     let v = e.target.closest("[data-view]")?.dataset.view;
     if (v) switchView(v);
@@ -2074,13 +2313,12 @@ label input, label textarea, label select { margin-top: 5px; }
     let c = e.target.closest("[data-course]")?.dataset.course;
     if (c) { selectedCourse = c; renderKnowledge(); }
 
-    /* 考试空间切换与删除 */
     let swEx = e.target.closest("[data-switch-exam-now]")?.dataset.switchExamNow;
     if (swEx) { data.active_exam_id = swEx; selectedCourse = "全部"; saveLocal(); closeModal(); }
     let delEx = e.target.closest("[data-del-exam]")?.dataset.delExam;
     if (delEx) {
       if (data.exams.length <= 1) { toast("至少保留一个考试空间"); return; }
-      if (confirm("确定删除该考试空间？（其下笔记可在全部分组中查看或提前导出备份）")) {
+      if (confirm("确定删除该考试空间？")) {
         data.exams = data.exams.filter(x => x.id !== delEx);
         if (data.active_exam_id === delEx) data.active_exam_id = data.exams[0].id;
         saveLocal();
@@ -2096,7 +2334,6 @@ label input, label textarea, label select { margin-top: 5px; }
       manageCoursesModal();
     }
 
-    /* 艾宾浩斯复习揭晓与评分 */
     let revDue = e.target.closest("[data-reveal-due]")?.dataset.revealDue;
     if (revDue) {
       let r = data.reviews.find(x => x.id === revDue);
@@ -2115,7 +2352,6 @@ label input, label textarea, label select { margin-top: 5px; }
     let delRev = e.target.closest("[data-delete-review]")?.dataset.deleteReview;
     if (delRev) { data.reviews = data.reviews.filter(x => x.id !== delRev); saveLocal(); }
 
-    /* 笔记增删改 */
     let b = e.target.closest("[data-edit-note]");
     if (b) noteForm(data.notes.find(x => x.id === b.dataset.editNote));
     b = e.target.closest("[data-delete-note]");
@@ -2123,23 +2359,33 @@ label input, label textarea, label select { margin-top: 5px; }
     b = e.target.closest("[data-review-note]");
     if (b) { let n = data.notes.find(x => x.id === b.dataset.reviewNote); if (n) { enqueueEbbinghaus(n); saveLocal(); toast("已加入艾宾浩斯复习队列"); } }
 
-    /* 真题刷题作答与双栏复盘切换 */
+    /* 真题作答、重做与斩题 */
     let pickOpt = e.target.closest("[data-pick-opt]");
     if (pickOpt) {
       let qid = pickOpt.dataset.pickOpt, val = pickOpt.dataset.optVal;
       userQuizAnswers[qid] = val;
       let qObj = data.quizzes.find(x => x.id === qid);
       if (qObj && qObj.answer && val !== qObj.answer.trim().toUpperCase()) {
+        qObj.wrong_count = (qObj.wrong_count || 0) + 1;
         enqueueEbbinghaus(qObj);
         saveLocal();
       }
       renderQuiz();
     }
-    let swRevQuiz = e.target.closest("[data-switch-review-quiz]");
-    if (swRevQuiz) {
-      $("#quizModeFilter").value = "review";
-      renderQuiz();
+    let redoQ = e.target.closest("[data-redo-quiz]")?.dataset.redoQuiz;
+    if (redoQ) { delete userQuizAnswers[redoQ]; renderQuiz(); }
+    let slayQ = e.target.closest("[data-slay-quiz]")?.dataset.slayQuiz;
+    if (slayQ) {
+      let qObj = data.quizzes.find(x => x.id === slayQ);
+      if (qObj) {
+        qObj.wrong_count = 0;
+        delete userQuizAnswers[slayQ];
+        saveLocal();
+        toast("⚔️ 已成功斩掉此错题，移出错题池！");
+      }
     }
+    let swRevQuiz = e.target.closest("[data-switch-review-quiz]");
+    if (swRevQuiz) { $("#quizModeFilter").value = "review"; renderQuiz(); }
     let editQ = e.target.closest("[data-edit-quiz]")?.dataset.editQuiz;
     if (editQ) quizForm(data.quizzes.find(x => x.id === editQ));
     let delQ = e.target.closest("[data-del-quiz]")?.dataset.delQuiz;
@@ -2193,7 +2439,7 @@ label input, label textarea, label select { margin-top: 5px; }
       toast("已将导图节点加入艾宾浩斯复习");
     }
 
-    /* 规范台账与本地 PDF 阅读器 */
+    /* 规范台账与本地 PDF 阅读器切换 */
     let stdTab = e.target.closest("[data-std-tab]")?.dataset.stdTab;
     if (stdTab) {
       $$("[data-std-tab]").forEach(btn => {
@@ -2234,13 +2480,18 @@ label input, label textarea, label select { margin-top: 5px; }
   $("#quickLogBar").onclick = e => { if (!e.target.closest("button")) noteForm(); };
   $("#btnDailyLog").onclick = () => noteForm();
   $("#newNoteBtn").onclick = () => noteForm();
+  $("#btnFormulaFilter").onclick = () => { formulaOnly = !formulaOnly; renderKnowledge(); };
   $("#btnQuickAiPack").onclick = importAiPackModal;
   $("#btnImportQuiz").onclick = importAiPackModal;
   $("#btnImportMap").onclick = importAiPackModal;
   $("#btnNewQuiz").onclick = () => quizForm();
+  $("#btnStartMock").onclick = startMockExamModal;
+  $("#btnFinishMock").onclick = finishMockExam;
+  $("#btnExitMock").onclick = () => { clearInterval(mockState.timerHandle); mockState.active = false; $("#mockTimerBanner").style.display = "none"; renderQuiz(); };
 
   $("#quizSearch").oninput = renderQuiz;
   $("#quizCourseFilter").onchange = renderQuiz;
+  $("#quizPoolFilter").onchange = renderQuiz;
   $("#quizModeFilter").onchange = renderQuiz;
   $("#courseSearch").oninput = renderKnowledge;
 
@@ -2260,10 +2511,9 @@ label input, label textarea, label select { margin-top: 5px; }
     saveLocal();
   };
 
-  /* 本地文件夹挂载 & 单文件PDF打开 */
   $("#btnMountFolder").onclick = async () => {
     if (!window.showDirectoryPicker) {
-      toast("当前浏览器不支持文件夹挂载，请使用右侧「临时打开单个 PDF」");
+      toast("当前浏览器不支持文件夹挂载，请使用右侧「打开单个本地 PDF」");
       return;
     }
     try {
@@ -2299,7 +2549,7 @@ label input, label textarea, label select { margin-top: 5px; }
   $("#modalClose").onclick = closeModal;
   $("#modalBackdrop").onclick = e => { if (e.target.id === "modalBackdrop") closeModal(); };
   $("#exportData").onclick = () => {
-    let blob = new Blob([JSON.stringify({ version: 2, exported_at: new Date().toISOString(), data }, null, 2)], { type: "application/json" });
+    let blob = new Blob([JSON.stringify({ version: 3, exported_at: new Date().toISOString(), data }, null, 2)], { type: "application/json" });
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "全周期备考库备份-" + today() + ".json";
